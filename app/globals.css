@@ -47,7 +47,7 @@
 	--radius: 0.625rem;
 	--background: oklch(0.98 0.02 280); /* Blanc légèrement teinté */
 	--foreground: oklch(0.15 0.02 260); /* Noir doux (logo visage) */
-	--card: oklch(1 0 0); 
+	--card: oklch(1 0 0);
 	--card-foreground: var(--foreground);
 	--popover: oklch(1 0 0);
 	--popover-foreground: var(--foreground);
