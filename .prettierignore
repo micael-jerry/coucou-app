@@ -1,0 +1,10 @@
+.husky
+.next
+
+node_modules
+
+README.md
+
+
+package.json
+pnpm-lock.yaml
