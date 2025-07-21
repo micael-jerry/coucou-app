@@ -4,6 +4,8 @@
 	"private": true,
 	"scripts": {
 		"dev": "next dev --turbopack",
+		"gen-client": "openapi-generator-cli generate",
+		"prebuild": "pnpm gen-client",
 		"build": "next build",
 		"start": "next start",
 		"lint": "next lint",

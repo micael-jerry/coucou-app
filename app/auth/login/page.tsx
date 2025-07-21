@@ -11,7 +11,7 @@ export default function LoginPage() {
 				<p className="text-muted-foreground text-center mb-6">Welcome back! Please enter your details.</p>
 				<LoginForm />
 				<p className="text-sm text-muted-foreground mt-6 text-center">
-					Don't have an account?{' '}
+					{"Don't have an account? "}
 					<Link href="/auth/register" className="text-primary underline hover:opacity-80">
 						Sign up
 					</Link>
