@@ -1,0 +1,17 @@
+.gitignore
+.npmignore
+.openapi-generator-ignore
+api.ts
+base.ts
+common.ts
+configuration.ts
+docs/AuthApi.md
+docs/Coucou.md
+docs/HealthApi.md
+docs/LoginDto.md
+docs/LoginResponse.md
+docs/SignUpDto.md
+docs/UserApi.md
+docs/UserResponse.md
+git_push.sh
+index.ts
