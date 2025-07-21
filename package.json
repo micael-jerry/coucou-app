@@ -5,7 +5,6 @@
 	"scripts": {
 		"dev": "next dev --turbopack",
 		"gen-client": "openapi-generator-cli generate",
-		"prebuild": "pnpm gen-client",
 		"build": "next build",
 		"start": "next start",
 		"lint": "next lint",
@@ -14,7 +13,6 @@
 	},
 	"dependencies": {
 		"@hookform/resolvers": "^5.1.1",
-		"@openapitools/openapi-generator-cli": "^2.21.3",
 		"@radix-ui/react-avatar": "^1.1.10",
 		"@radix-ui/react-label": "^2.1.7",
 		"@radix-ui/react-slot": "^1.2.3",
@@ -33,6 +31,7 @@
 		"@commitlint/cli": "^19.8.1",
 		"@commitlint/config-conventional": "^19.8.1",
 		"@eslint/eslintrc": "^3",
+		"@openapitools/openapi-generator-cli": "^2.21.3",
 		"@tailwindcss/postcss": "^4",
 		"@types/node": "^20",
 		"@types/react": "^19",
