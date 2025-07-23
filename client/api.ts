@@ -39,6 +39,43 @@ export interface Coucou {
 /**
  * 
  * @export
+ * @interface HttpExceptionResponseDto
+ */
+export interface HttpExceptionResponseDto {
+    /**
+     * HTTP status code
+     * @type {number}
+     * @memberof HttpExceptionResponseDto
+     */
+    'status': number;
+    /**
+     * Error type
+     * @type {string}
+     * @memberof HttpExceptionResponseDto
+     */
+    'type': string;
+    /**
+     * Error message
+     * @type {string}
+     * @memberof HttpExceptionResponseDto
+     */
+    'message': string;
+    /**
+     * Timestamp of the error
+     * @type {string}
+     * @memberof HttpExceptionResponseDto
+     */
+    'typestamp': string;
+    /**
+     * Request path that caused the error
+     * @type {string}
+     * @memberof HttpExceptionResponseDto
+     */
+    'path': string;
+}
+/**
+ * 
+ * @export
  * @interface LoginDto
  */
 export interface LoginDto {
@@ -150,7 +187,8 @@ export interface UserResponse {
 export const AuthApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
-         * 
+         * Allows a user to log in by providing their username and password.
+         * @summary User login endpoint
          * @param {LoginDto} loginDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -185,7 +223,8 @@ export const AuthApiAxiosParamCreator = function (configuration?: Configuration)
             };
         },
         /**
-         * 
+         * Allows a new user to register by providing their details.
+         * @summary User registration endpoint
          * @param {SignUpDto} signUpDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -230,7 +269,8 @@ export const AuthApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = AuthApiAxiosParamCreator(configuration)
     return {
         /**
-         * 
+         * Allows a user to log in by providing their username and password.
+         * @summary User login endpoint
          * @param {LoginDto} loginDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -242,7 +282,8 @@ export const AuthApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Allows a new user to register by providing their details.
+         * @summary User registration endpoint
          * @param {SignUpDto} signUpDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -264,7 +305,8 @@ export const AuthApiFactory = function (configuration?: Configuration, basePath?
     const localVarFp = AuthApiFp(configuration)
     return {
         /**
-         * 
+         * Allows a user to log in by providing their username and password.
+         * @summary User login endpoint
          * @param {AuthApiSignInRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -273,7 +315,8 @@ export const AuthApiFactory = function (configuration?: Configuration, basePath?
             return localVarFp.signIn(requestParameters.loginDto, options).then((request) => request(axios, basePath));
         },
         /**
-         * 
+         * Allows a new user to register by providing their details.
+         * @summary User registration endpoint
          * @param {AuthApiSignUpRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -291,7 +334,8 @@ export const AuthApiFactory = function (configuration?: Configuration, basePath?
  */
 export interface AuthApiInterface {
     /**
-     * 
+     * Allows a user to log in by providing their username and password.
+     * @summary User login endpoint
      * @param {AuthApiSignInRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -300,7 +344,8 @@ export interface AuthApiInterface {
     signIn(requestParameters: AuthApiSignInRequest, options?: RawAxiosRequestConfig): AxiosPromise<LoginResponse>;
 
     /**
-     * 
+     * Allows a new user to register by providing their details.
+     * @summary User registration endpoint
      * @param {AuthApiSignUpRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -346,7 +391,8 @@ export interface AuthApiSignUpRequest {
  */
 export class AuthApi extends BaseAPI implements AuthApiInterface {
     /**
-     * 
+     * Allows a user to log in by providing their username and password.
+     * @summary User login endpoint
      * @param {AuthApiSignInRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -357,7 +403,8 @@ export class AuthApi extends BaseAPI implements AuthApiInterface {
     }
 
     /**
-     * 
+     * Allows a new user to register by providing their details.
+     * @summary User registration endpoint
      * @param {AuthApiSignUpRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -377,7 +424,8 @@ export class AuthApi extends BaseAPI implements AuthApiInterface {
 export const HealthApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
-         * 
+         * Returns a simple message to verify the service is running.
+         * @summary Health check endpoint
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -416,7 +464,8 @@ export const HealthApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = HealthApiAxiosParamCreator(configuration)
     return {
         /**
-         * 
+         * Returns a simple message to verify the service is running.
+         * @summary Health check endpoint
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -437,7 +486,8 @@ export const HealthApiFactory = function (configuration?: Configuration, basePat
     const localVarFp = HealthApiFp(configuration)
     return {
         /**
-         * 
+         * Returns a simple message to verify the service is running.
+         * @summary Health check endpoint
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -454,7 +504,8 @@ export const HealthApiFactory = function (configuration?: Configuration, basePat
  */
 export interface HealthApiInterface {
     /**
-     * 
+     * Returns a simple message to verify the service is running.
+     * @summary Health check endpoint
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof HealthApiInterface
@@ -471,7 +522,8 @@ export interface HealthApiInterface {
  */
 export class HealthApi extends BaseAPI implements HealthApiInterface {
     /**
-     * 
+     * Returns a simple message to verify the service is running.
+     * @summary Health check endpoint
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof HealthApi

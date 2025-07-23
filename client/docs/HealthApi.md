@@ -4,11 +4,12 @@ All URIs are relative to *http://localhost*
 
 |Method | HTTP request | Description|
 |------------- | ------------- | -------------|
-|[**coucou**](#coucou) | **GET** /coucou | |
+|[**coucou**](#coucou) | **GET** /coucou | Health check endpoint|
 
 # **coucou**
 > Coucou coucou()
 
+Returns a simple message to verify the service is running.
 
 ### Example
 
@@ -46,6 +47,11 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 |**200** |  |  -  |
+|**400** |  |  -  |
+|**403** | Forbidden - The server understood the request, but refuses to authorize it. |  -  |
+|**404** | Not Found - The requested resource could not be found on the server. |  -  |
+|**429** | Too Many Requests - The user has sent too many requests in a given amount of time. |  -  |
+|**500** | Internal Server Error - An unexpected condition was encountered by the server. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

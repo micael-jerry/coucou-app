@@ -4,12 +4,13 @@ All URIs are relative to *http://localhost*
 
 |Method | HTTP request | Description|
 |------------- | ------------- | -------------|
-|[**signIn**](#signin) | **POST** /auth/sign-in | |
-|[**signUp**](#signup) | **POST** /auth/sign-up | |
+|[**signIn**](#signin) | **POST** /auth/sign-in | User login endpoint|
+|[**signUp**](#signup) | **POST** /auth/sign-up | User registration endpoint|
 
 # **signIn**
 > LoginResponse signIn(loginDto)
 
+Allows a user to log in by providing their username and password.
 
 ### Example
 
@@ -55,12 +56,18 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 |**200** |  |  -  |
+|**400** | Bad Request - The request could not be understood or was missing required parameters. |  -  |
+|**403** | Forbidden - The server understood the request, but refuses to authorize it. |  -  |
+|**404** | Not Found - The requested resource could not be found on the server. |  -  |
+|**429** | Too Many Requests - The user has sent too many requests in a given amount of time. |  -  |
+|**500** | Internal Server Error - An unexpected condition was encountered by the server. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **signUp**
 > UserResponse signUp(signUpDto)
 
+Allows a new user to register by providing their details.
 
 ### Example
 
@@ -106,6 +113,11 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 |**201** |  |  -  |
+|**400** | Bad Request - The request could not be understood or was missing required parameters. |  -  |
+|**403** | Forbidden - The server understood the request, but refuses to authorize it. |  -  |
+|**404** | Not Found - The requested resource could not be found on the server. |  -  |
+|**429** | Too Many Requests - The user has sent too many requests in a given amount of time. |  -  |
+|**500** | Internal Server Error - An unexpected condition was encountered by the server. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

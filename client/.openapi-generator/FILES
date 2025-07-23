@@ -1,6 +1,5 @@
 .gitignore
 .npmignore
-.openapi-generator-ignore
 api.ts
 base.ts
 common.ts
@@ -8,6 +7,7 @@ configuration.ts
 docs/AuthApi.md
 docs/Coucou.md
 docs/HealthApi.md
+docs/HttpExceptionResponseDto.md
 docs/LoginDto.md
 docs/LoginResponse.md
 docs/SignUpDto.md
