@@ -1,6 +1,7 @@
 import Footer from '@/components/layout/footer/footer';
 import { Button } from '@/components/ui/button';
 import { APP_NAME } from '@/constants/app';
+import { ROUTES } from '@/constants/routes';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -8,14 +9,16 @@ export default function Home() {
 	return (
 		<main className="flex flex-col min-h-screen bg-background">
 			<header className="flex items-center justify-between px-4 md:px-8 py-4 border-b">
-				<Link href={'/'} className="flex items-center gap-2">
+				<Link href={ROUTES.HOME} className="flex items-center gap-2">
 					<Image src="/logo.png" alt={`${APP_NAME} Logo`} width={36} height={36} className="rounded-md" priority />
 					<span className="font-bold text-lg md:text-xl">{APP_NAME}</span>
 				</Link>
 				<div className="flex gap-2">
-					<Button variant="ghost" size="sm">
-						Log In
-					</Button>
+					<Link href={ROUTES.LOGIN}>
+						<Button variant="ghost" size="sm">
+							Log In
+						</Button>
+					</Link>
 					<Button size="sm">Sign Up</Button>
 				</div>
 			</header>
@@ -30,9 +33,11 @@ export default function Home() {
 					<Button size="lg" className="w-full sm:w-auto">
 						Create New Account
 					</Button>
-					<Button variant="secondary" size="lg" className="w-full sm:w-auto">
-						Already have an account? Log In
-					</Button>
+					<Link href={ROUTES.LOGIN}>
+						<Button variant="secondary" size="lg" className="w-full sm:w-auto">
+							Already have an account? Log In
+						</Button>
+					</Link>
 				</div>
 			</section>
 
