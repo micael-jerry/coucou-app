@@ -19,7 +19,9 @@ export default function Home() {
 							Log In
 						</Button>
 					</Link>
-					<Button size="sm">Sign Up</Button>
+					<Link href={ROUTES.SIGNUP}>
+						<Button size="sm">Sign Up</Button>
+					</Link>
 				</div>
 			</header>
 
@@ -30,9 +32,11 @@ export default function Home() {
 					connecting today.
 				</p>
 				<div className="flex flex-col sm:flex-row gap-4 justify-center w-full max-w-md">
-					<Button size="lg" className="w-full sm:w-auto">
-						Create New Account
-					</Button>
+					<Link href={ROUTES.SIGNUP}>
+						<Button size="lg" className="w-full sm:w-auto">
+							Create New Account
+						</Button>
+					</Link>
 					<Link href={ROUTES.LOGIN}>
 						<Button variant="secondary" size="lg" className="w-full sm:w-auto">
 							Already have an account? Log In
