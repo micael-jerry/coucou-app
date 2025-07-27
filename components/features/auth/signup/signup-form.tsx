@@ -3,12 +3,18 @@
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { ROUTES } from '@/constants/routes';
 import { signupFormSchema } from '@/schema/auth/signup-form-schema';
+import { signUp } from '@/service/auth-service';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import z from 'zod';
 
 export default function SignupForm() {
+	const [error, setError] = useState<string | null>(null);
+	const router = useRouter();
 	const signupForm = useForm<z.infer<typeof signupFormSchema>>({
 		resolver: zodResolver(signupFormSchema),
 		defaultValues: {
@@ -21,8 +27,15 @@ export default function SignupForm() {
 		},
 	});
 
-	const onSignupFormSubmit = (data: z.infer<typeof signupFormSchema>) => {
-		console.log('Signup data submitted:', data);
+	const onSignupFormSubmit = async (data: z.infer<typeof signupFormSchema>) => {
+		try {
+			setError(null);
+			await signUp(data);
+			router.push(ROUTES.LOGIN);
+		} catch (err) {
+			setError('Form submit error !!!');
+			console.log(err);
+		}
 	};
 
 	return (
@@ -120,6 +133,7 @@ export default function SignupForm() {
 						</FormItem>
 					)}
 				/>
+				{error && <FormDescription className="text-red-700 mb-2">{error}</FormDescription>}
 				<Button
 					type="submit"
 					className="mt-2 w-full rounded-lg bg-primary text-white font-semibold shadow hover:bg-primary/90 transition"
