@@ -104,6 +104,12 @@ export interface LoginResponse {
      * @memberof LoginResponse
      */
     'access_token': string;
+    /**
+     * User details
+     * @type {UserResponse}
+     * @memberof LoginResponse
+     */
+    'user': UserResponse;
 }
 /**
  * 
