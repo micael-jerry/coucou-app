@@ -7,18 +7,31 @@ import { useForm } from 'react-hook-form';
 import z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel } from '@/components/ui/form';
+import { signIn } from 'next-auth/react';
+import { useState } from 'react';
+import { ROUTES } from '@/constants/routes';
+import { useRouter } from 'next/navigation';
 
 export default function LoginForm() {
+	const [error, setError] = useState<string | null>(null);
+	const router = useRouter();
 	const loginForm = useForm<z.infer<typeof loginFormSchema>>({
 		resolver: zodResolver(loginFormSchema),
 		defaultValues: {
-			email: '',
+			username: '',
 			password: '',
 		},
 	});
 
-	const onLoginFormSubmit = (data: z.infer<typeof loginFormSchema>) => {
+	const onLoginFormSubmit = async (data: z.infer<typeof loginFormSchema>) => {
 		console.log('Login data submitted:', data);
+		await signIn('credentials', { redirect: false, ...data }).then((res) => {
+			if (res?.error) setError(res.error);
+			else {
+				setError(null);
+				router.push(ROUTES.COUCOU);
+			}
+		});
 	};
 
 	return (
@@ -26,14 +39,14 @@ export default function LoginForm() {
 			<form onSubmit={loginForm.handleSubmit(onLoginFormSubmit)} className="w-full flex flex-col gap-4">
 				<FormField
 					control={loginForm.control}
-					name="email"
+					name="username"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>Email</FormLabel>
+							<FormLabel>Username</FormLabel>
 							<FormControl>
-								<Input placeholder="you@example.com" autoComplete="email" {...field} />
+								<Input placeholder="jhonedoe" autoComplete="username" {...field} />
 							</FormControl>
-							<FormDescription className="text-red-700">{loginForm.formState.errors.email?.message}</FormDescription>
+							<FormDescription className="text-red-700">{loginForm.formState.errors.username?.message}</FormDescription>
 						</FormItem>
 					)}
 				/>
@@ -50,6 +63,7 @@ export default function LoginForm() {
 						</FormItem>
 					)}
 				/>
+				{error && <FormDescription className="text-red-700 mb-2">{error}</FormDescription>}
 				<Button type="submit" className="mt-2 w-full">
 					Login
 				</Button>
