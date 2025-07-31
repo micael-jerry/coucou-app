@@ -24,7 +24,6 @@ export default function LoginForm() {
 	});
 
 	const onLoginFormSubmit = async (data: z.infer<typeof loginFormSchema>) => {
-		console.log('Login data submitted:', data);
 		await signIn('credentials', { redirect: false, ...data }).then((res) => {
 			if (res?.error) setError(res.error);
 			else {
