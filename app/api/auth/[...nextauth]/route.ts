@@ -1,9 +1,10 @@
 import { LoginDto } from '@/client';
 import { apiClient } from '@/lib/api/api-client';
 import NextAuth, { RequestInternal, User } from 'next-auth';
+import { AuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
-const handler = NextAuth({
+export const authOptions: AuthOptions = {
 	providers: [
 		CredentialsProvider({
 			credentials: {
@@ -45,6 +46,8 @@ const handler = NextAuth({
 		strategy: 'jwt',
 	},
 	secret: process.env.NEXTAUTH_SECRET,
-});
+};
+
+const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };
