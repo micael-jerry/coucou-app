@@ -104,6 +104,12 @@ export interface LoginResponse {
      * @memberof LoginResponse
      */
     'access_token': string;
+    /**
+     * User details
+     * @type {UserResponse}
+     * @memberof LoginResponse
+     */
+    'user': UserResponse;
 }
 /**
  * 
@@ -258,6 +264,40 @@ export const AuthApiAxiosParamCreator = function (configuration?: Configuration)
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * Returns the details of the currently authenticated user.
+         * @summary Get current user information
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        whoAmI: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/auth/who-am-i`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearer required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -294,6 +334,18 @@ export const AuthApiFp = function(configuration?: Configuration) {
             const localVarOperationServerBasePath = operationServerMap['AuthApi.signUp']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
+        /**
+         * Returns the details of the currently authenticated user.
+         * @summary Get current user information
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async whoAmI(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.whoAmI(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AuthApi.whoAmI']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
     }
 };
 
@@ -324,6 +376,15 @@ export const AuthApiFactory = function (configuration?: Configuration, basePath?
         signUp(requestParameters: AuthApiSignUpRequest, options?: RawAxiosRequestConfig): AxiosPromise<UserResponse> {
             return localVarFp.signUp(requestParameters.signUpDto, options).then((request) => request(axios, basePath));
         },
+        /**
+         * Returns the details of the currently authenticated user.
+         * @summary Get current user information
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        whoAmI(options?: RawAxiosRequestConfig): AxiosPromise<UserResponse> {
+            return localVarFp.whoAmI(options).then((request) => request(axios, basePath));
+        },
     };
 };
 
@@ -352,6 +413,15 @@ export interface AuthApiInterface {
      * @memberof AuthApiInterface
      */
     signUp(requestParameters: AuthApiSignUpRequest, options?: RawAxiosRequestConfig): AxiosPromise<UserResponse>;
+
+    /**
+     * Returns the details of the currently authenticated user.
+     * @summary Get current user information
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AuthApiInterface
+     */
+    whoAmI(options?: RawAxiosRequestConfig): AxiosPromise<UserResponse>;
 
 }
 
@@ -412,6 +482,17 @@ export class AuthApi extends BaseAPI implements AuthApiInterface {
      */
     public signUp(requestParameters: AuthApiSignUpRequest, options?: RawAxiosRequestConfig) {
         return AuthApiFp(this.configuration).signUp(requestParameters.signUpDto, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Returns the details of the currently authenticated user.
+     * @summary Get current user information
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AuthApi
+     */
+    public whoAmI(options?: RawAxiosRequestConfig) {
+        return AuthApiFp(this.configuration).whoAmI(options).then((request) => request(this.axios, this.basePath));
     }
 }
 
