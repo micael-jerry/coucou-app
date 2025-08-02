@@ -6,6 +6,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **access_token** | **string** | JWT token | [default to undefined]
+**user** | [**UserResponse**](UserResponse.md) | User details | [default to undefined]
 
 ## Example
 
@@ -14,6 +15,7 @@ import { LoginResponse } from './api';
 
 const instance: LoginResponse = {
     access_token,
+    user,
 };
 ```
 
