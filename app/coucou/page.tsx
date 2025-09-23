@@ -1,4 +1,4 @@
-import { authOptions } from '@/auth/auth-option';
+import { authOptions } from '@/src/auth/auth-option';
 import { getServerSession } from 'next-auth';
 
 export default async function CoucouPage() {

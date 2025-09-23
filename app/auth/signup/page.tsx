@@ -1,7 +1,7 @@
-import Link from 'next/link';
-import Image from 'next/image';
 import SignupForm from '@/components/features/auth/signup/signup-form';
-import { ROUTES } from '@/constants/routes';
+import { ROUTES } from '@/src/constants/routes';
+import Image from 'next/image';
+import Link from 'next/link';
 
 export default function RegisterPage() {
 	return (

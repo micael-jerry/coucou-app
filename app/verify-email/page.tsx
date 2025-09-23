@@ -1,12 +1,12 @@
+import { HttpExceptionResponseDto } from '@/client';
 import Footer from '@/components/layout/footer/footer';
-import { APP_NAME } from '@/constants/app';
-import { ROUTES } from '@/constants/routes';
+import { apiClient } from '@/lib/api/api-client';
+import { APP_NAME } from '@/src/constants/app';
+import { ROUTES } from '@/src/constants/routes';
+import { HttpStatusCode } from 'axios';
+import { CheckCircle, XCircle } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { CheckCircle, XCircle } from 'lucide-react';
-import { apiClient } from '@/lib/api/api-client';
-import { HttpExceptionResponseDto } from '@/client';
-import { HttpStatusCode } from 'axios';
 
 interface VerifyEmailPageProps {
 	searchParams: Promise<{ token?: string }>;
