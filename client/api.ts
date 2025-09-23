@@ -173,6 +173,12 @@ export interface UserResponse {
      */
     'email': string;
     /**
+     * Email verification status
+     * @type {boolean}
+     * @memberof UserResponse
+     */
+    'isVerified': boolean;
+    /**
      * 
      * @type {string}
      * @memberof UserResponse
@@ -184,6 +190,12 @@ export interface UserResponse {
      * @memberof UserResponse
      */
     'lastname': string;
+    /**
+     * User created datetime
+     * @type {string}
+     * @memberof UserResponse
+     */
+    'createdAt': string;
 }
 
 /**
@@ -265,6 +277,43 @@ export const AuthApiAxiosParamCreator = function (configuration?: Configuration)
             };
         },
         /**
+         * Verify email address with token sended into email of user.
+         * @summary Verify email address
+         * @param {string} token Token to verify email address
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        verifyEmail: async (token: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'token' is not null or undefined
+            assertParamExists('verifyEmail', 'token', token)
+            const localVarPath = `/auth/verify-email`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (token !== undefined) {
+                localVarQueryParameter['token'] = token;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * Returns the details of the currently authenticated user.
          * @summary Get current user information
          * @param {*} [options] Override http request option.
@@ -335,6 +384,19 @@ export const AuthApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
+         * Verify email address with token sended into email of user.
+         * @summary Verify email address
+         * @param {string} token Token to verify email address
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async verifyEmail(token: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<HttpExceptionResponseDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.verifyEmail(token, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AuthApi.verifyEmail']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
          * Returns the details of the currently authenticated user.
          * @summary Get current user information
          * @param {*} [options] Override http request option.
@@ -377,6 +439,16 @@ export const AuthApiFactory = function (configuration?: Configuration, basePath?
             return localVarFp.signUp(requestParameters.signUpDto, options).then((request) => request(axios, basePath));
         },
         /**
+         * Verify email address with token sended into email of user.
+         * @summary Verify email address
+         * @param {AuthApiVerifyEmailRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        verifyEmail(requestParameters: AuthApiVerifyEmailRequest, options?: RawAxiosRequestConfig): AxiosPromise<HttpExceptionResponseDto> {
+            return localVarFp.verifyEmail(requestParameters.token, options).then((request) => request(axios, basePath));
+        },
+        /**
          * Returns the details of the currently authenticated user.
          * @summary Get current user information
          * @param {*} [options] Override http request option.
@@ -413,6 +485,16 @@ export interface AuthApiInterface {
      * @memberof AuthApiInterface
      */
     signUp(requestParameters: AuthApiSignUpRequest, options?: RawAxiosRequestConfig): AxiosPromise<UserResponse>;
+
+    /**
+     * Verify email address with token sended into email of user.
+     * @summary Verify email address
+     * @param {AuthApiVerifyEmailRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AuthApiInterface
+     */
+    verifyEmail(requestParameters: AuthApiVerifyEmailRequest, options?: RawAxiosRequestConfig): AxiosPromise<HttpExceptionResponseDto>;
 
     /**
      * Returns the details of the currently authenticated user.
@@ -454,6 +536,20 @@ export interface AuthApiSignUpRequest {
 }
 
 /**
+ * Request parameters for verifyEmail operation in AuthApi.
+ * @export
+ * @interface AuthApiVerifyEmailRequest
+ */
+export interface AuthApiVerifyEmailRequest {
+    /**
+     * Token to verify email address
+     * @type {string}
+     * @memberof AuthApiVerifyEmail
+     */
+    readonly token: string
+}
+
+/**
  * AuthApi - object-oriented interface
  * @export
  * @class AuthApi
@@ -482,6 +578,18 @@ export class AuthApi extends BaseAPI implements AuthApiInterface {
      */
     public signUp(requestParameters: AuthApiSignUpRequest, options?: RawAxiosRequestConfig) {
         return AuthApiFp(this.configuration).signUp(requestParameters.signUpDto, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Verify email address with token sended into email of user.
+     * @summary Verify email address
+     * @param {AuthApiVerifyEmailRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AuthApi
+     */
+    public verifyEmail(requestParameters: AuthApiVerifyEmailRequest, options?: RawAxiosRequestConfig) {
+        return AuthApiFp(this.configuration).verifyEmail(requestParameters.token, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -623,7 +731,8 @@ export class HealthApi extends BaseAPI implements HealthApiInterface {
 export const UserApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
-         * 
+         * Returns a list of all users.
+         * @summary Get all users
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -639,6 +748,48 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication bearer required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Returns a user by id.
+         * @summary Get user by id
+         * @param {string} userId The id of the user to retrieve.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getUserById: async (userId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'userId' is not null or undefined
+            assertParamExists('getUserById', 'userId', userId)
+            const localVarPath = `/users/{userId}`
+                .replace(`{${"userId"}}`, encodeURIComponent(String(userId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearer required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
     
@@ -662,14 +813,28 @@ export const UserApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = UserApiAxiosParamCreator(configuration)
     return {
         /**
-         * 
+         * Returns a list of all users.
+         * @summary Get all users
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getAllUsers(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async getAllUsers(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<UserResponse>>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getAllUsers(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['UserApi.getAllUsers']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Returns a user by id.
+         * @summary Get user by id
+         * @param {string} userId The id of the user to retrieve.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getUserById(userId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getUserById(userId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['UserApi.getUserById']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
@@ -683,12 +848,23 @@ export const UserApiFactory = function (configuration?: Configuration, basePath?
     const localVarFp = UserApiFp(configuration)
     return {
         /**
-         * 
+         * Returns a list of all users.
+         * @summary Get all users
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getAllUsers(options?: RawAxiosRequestConfig): AxiosPromise<void> {
+        getAllUsers(options?: RawAxiosRequestConfig): AxiosPromise<Array<UserResponse>> {
             return localVarFp.getAllUsers(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Returns a user by id.
+         * @summary Get user by id
+         * @param {UserApiGetUserByIdRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getUserById(requestParameters: UserApiGetUserByIdRequest, options?: RawAxiosRequestConfig): AxiosPromise<UserResponse> {
+            return localVarFp.getUserById(requestParameters.userId, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -700,13 +876,38 @@ export const UserApiFactory = function (configuration?: Configuration, basePath?
  */
 export interface UserApiInterface {
     /**
-     * 
+     * Returns a list of all users.
+     * @summary Get all users
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof UserApiInterface
      */
-    getAllUsers(options?: RawAxiosRequestConfig): AxiosPromise<void>;
+    getAllUsers(options?: RawAxiosRequestConfig): AxiosPromise<Array<UserResponse>>;
 
+    /**
+     * Returns a user by id.
+     * @summary Get user by id
+     * @param {UserApiGetUserByIdRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UserApiInterface
+     */
+    getUserById(requestParameters: UserApiGetUserByIdRequest, options?: RawAxiosRequestConfig): AxiosPromise<UserResponse>;
+
+}
+
+/**
+ * Request parameters for getUserById operation in UserApi.
+ * @export
+ * @interface UserApiGetUserByIdRequest
+ */
+export interface UserApiGetUserByIdRequest {
+    /**
+     * The id of the user to retrieve.
+     * @type {string}
+     * @memberof UserApiGetUserById
+     */
+    readonly userId: string
 }
 
 /**
@@ -717,13 +918,26 @@ export interface UserApiInterface {
  */
 export class UserApi extends BaseAPI implements UserApiInterface {
     /**
-     * 
+     * Returns a list of all users.
+     * @summary Get all users
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof UserApi
      */
     public getAllUsers(options?: RawAxiosRequestConfig) {
         return UserApiFp(this.configuration).getAllUsers(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Returns a user by id.
+     * @summary Get user by id
+     * @param {UserApiGetUserByIdRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UserApi
+     */
+    public getUserById(requestParameters: UserApiGetUserByIdRequest, options?: RawAxiosRequestConfig) {
+        return UserApiFp(this.configuration).getUserById(requestParameters.userId, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
