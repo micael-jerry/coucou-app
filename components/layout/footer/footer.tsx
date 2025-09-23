@@ -1,4 +1,4 @@
-import { APP_CREATOR, APP_CREATOR_URL, APP_NAME, APP_YEAR } from '@/constants/app';
+import { APP_CREATOR, APP_CREATOR_URL, APP_NAME, APP_YEAR } from '@/src/constants/app';
 import Link from 'next/link';
 
 export default function Footer() {

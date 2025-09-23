@@ -1,7 +1,7 @@
 import Footer from '@/components/layout/footer/footer';
 import { Button } from '@/components/ui/button';
-import { APP_NAME } from '@/constants/app';
-import { ROUTES } from '@/constants/routes';
+import { APP_NAME } from '@/src/constants/app';
+import { ROUTES } from '@/src/constants/routes';
 import Image from 'next/image';
 import Link from 'next/link';
 

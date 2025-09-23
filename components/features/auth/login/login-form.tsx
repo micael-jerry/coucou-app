@@ -1,16 +1,16 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { loginFormSchema } from '@/schema/auth/login-form-schema';
+import { ROUTES } from '@/src/constants/routes';
+import { loginFormSchema } from '@/src/schema/auth/login-form-schema';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import z from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel } from '@/components/ui/form';
-import { signIn } from 'next-auth/react';
-import { useState } from 'react';
-import { ROUTES } from '@/constants/routes';
-import { useRouter } from 'next/navigation';
 
 export default function LoginForm() {
 	const [error, setError] = useState<string | null>(null);

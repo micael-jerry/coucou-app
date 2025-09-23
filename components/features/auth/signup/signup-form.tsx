@@ -3,9 +3,9 @@
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { ROUTES } from '@/constants/routes';
-import { signupFormSchema } from '@/schema/auth/signup-form-schema';
-import { signUp } from '@/service/auth-service';
+import { ROUTES } from '@/src/constants/routes';
+import { signupFormSchema } from '@/src/schema/auth/signup-form-schema';
+import { signUp } from '@/src/service/auth-service';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';

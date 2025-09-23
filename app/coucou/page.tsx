@@ -1,5 +1,5 @@
+import { authOptions } from '@/src/auth/auth-option';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '../api/auth/[...nextauth]/route';
 
 export default async function CoucouPage() {
 	const session = await getServerSession(authOptions);
