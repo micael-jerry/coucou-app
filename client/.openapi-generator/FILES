@@ -16,6 +16,9 @@ docs/LoginResponse.md
 docs/MessageApi.md
 docs/MessageInput.md
 docs/MessageResponse.md
+docs/ResetPasswordDto.md
+docs/ResetPasswordRequestDto.md
+docs/ResetPasswordRequestResponse.md
 docs/SignUpDto.md
 docs/UserApi.md
 docs/UserResponse.md

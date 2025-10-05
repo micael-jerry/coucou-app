@@ -4,10 +4,126 @@ All URIs are relative to *http://localhost*
 
 |Method | HTTP request | Description|
 |------------- | ------------- | -------------|
+|[**resetPassword**](#resetpassword) | **POST** /auth/reset-password | Reset password|
+|[**resetPasswordRequest**](#resetpasswordrequest) | **POST** /auth/reset-password-request | Send reset password email|
 |[**signIn**](#signin) | **POST** /auth/sign-in | User login endpoint|
 |[**signUp**](#signup) | **POST** /auth/sign-up | User registration endpoint|
 |[**verifyEmail**](#verifyemail) | **GET** /auth/verify-email | Verify email address|
 |[**whoAmI**](#whoami) | **GET** /auth/who-am-i | Get current user information|
+
+# **resetPassword**
+> UserResponse resetPassword(resetPasswordDto)
+
+Reset password with token sended into email of user.
+
+### Example
+
+```typescript
+import {
+    AuthApi,
+    Configuration,
+    ResetPasswordDto
+} from './api';
+
+const configuration = new Configuration();
+const apiInstance = new AuthApi(configuration);
+
+let resetPasswordDto: ResetPasswordDto; //
+
+const { status, data } = await apiInstance.resetPassword(
+    resetPasswordDto
+);
+```
+
+### Parameters
+
+|Name | Type | Description  | Notes|
+|------------- | ------------- | ------------- | -------------|
+| **resetPasswordDto** | **ResetPasswordDto**|  | |
+
+
+### Return type
+
+**UserResponse**
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+|**200** |  |  -  |
+|**400** | Bad Request - The request could not be understood or was missing required parameters. |  -  |
+|**403** | Forbidden - The server understood the request, but refuses to authorize it. |  -  |
+|**404** | Not Found - The requested resource could not be found on the server. |  -  |
+|**429** | Too Many Requests - The user has sent too many requests in a given amount of time. |  -  |
+|**500** | Internal Server Error - An unexpected condition was encountered by the server. |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **resetPasswordRequest**
+> ResetPasswordRequestResponse resetPasswordRequest(resetPasswordRequestDto)
+
+Send reset password email to user.
+
+### Example
+
+```typescript
+import {
+    AuthApi,
+    Configuration,
+    ResetPasswordRequestDto
+} from './api';
+
+const configuration = new Configuration();
+const apiInstance = new AuthApi(configuration);
+
+let resetPasswordRequestDto: ResetPasswordRequestDto; //
+
+const { status, data } = await apiInstance.resetPasswordRequest(
+    resetPasswordRequestDto
+);
+```
+
+### Parameters
+
+|Name | Type | Description  | Notes|
+|------------- | ------------- | ------------- | -------------|
+| **resetPasswordRequestDto** | **ResetPasswordRequestDto**|  | |
+
+
+### Return type
+
+**ResetPasswordRequestResponse**
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+|**200** |  |  -  |
+|**400** | Bad Request - The request could not be understood or was missing required parameters. |  -  |
+|**403** | Forbidden - The server understood the request, but refuses to authorize it. |  -  |
+|**404** | Not Found - The requested resource could not be found on the server. |  -  |
+|**429** | Too Many Requests - The user has sent too many requests in a given amount of time. |  -  |
+|**500** | Internal Server Error - An unexpected condition was encountered by the server. |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **signIn**
 > LoginResponse signIn(loginDto)
