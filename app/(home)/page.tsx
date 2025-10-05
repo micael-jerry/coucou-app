@@ -1,11 +1,17 @@
 import Footer from '@/components/layout/footer/footer';
 import { Button } from '@/components/ui/button';
+import { authOptions } from '@/src/auth/auth-option';
 import { APP_NAME } from '@/src/constants/app';
 import { ROUTES } from '@/src/constants/routes';
+import { getServerSession } from 'next-auth';
 import Image from 'next/image';
 import Link from 'next/link';
+import { redirect, RedirectType } from 'next/navigation';
 
-export default function Home() {
+export default async function Home() {
+	const session = await getServerSession(authOptions);
+	if (session?.user) redirect(ROUTES.COUCOU, RedirectType.replace);
+
 	return (
 		<main className="flex flex-col min-h-screen bg-background">
 			<header className="flex items-center justify-between px-4 md:px-8 py-4 border-b">
