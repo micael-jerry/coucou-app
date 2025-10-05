@@ -2,7 +2,7 @@ import { AuthApi, Configuration, ConversationApi, HealthApi, MessageApi, UserApi
 import axios from 'axios';
 import { getSession } from 'next-auth/react';
 
-let configuration = new Configuration({
+const configuration = new Configuration({
 	basePath: process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3000/api',
 });
 
