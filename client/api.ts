@@ -26,6 +26,84 @@ import { BASE_PATH, COLLECTION_FORMATS, BaseAPI, RequiredError, operationServerM
 /**
  * 
  * @export
+ * @interface ConversationInput
+ */
+export interface ConversationInput {
+    /**
+     * 
+     * @type {string}
+     * @memberof ConversationInput
+     */
+    'type': ConversationInputTypeEnum;
+    /**
+     * Array of user id
+     * @type {Array<string>}
+     * @memberof ConversationInput
+     */
+    'membersId': Array<string>;
+}
+
+export const ConversationInputTypeEnum = {
+    Private: 'PRIVATE',
+    Group: 'GROUP'
+} as const;
+
+export type ConversationInputTypeEnum = typeof ConversationInputTypeEnum[keyof typeof ConversationInputTypeEnum];
+
+/**
+ * 
+ * @export
+ * @interface ConversationResponse
+ */
+export interface ConversationResponse {
+    /**
+     * 
+     * @type {string}
+     * @memberof ConversationResponse
+     */
+    'id': string;
+    /**
+     * User created datetime
+     * @type {string}
+     * @memberof ConversationResponse
+     */
+    'createdAt': string;
+    /**
+     * User updated datetime
+     * @type {string}
+     * @memberof ConversationResponse
+     */
+    'updatedAt': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ConversationResponse
+     */
+    'type': ConversationResponseTypeEnum;
+    /**
+     * 
+     * @type {Array<UserResponse>}
+     * @memberof ConversationResponse
+     */
+    'members': Array<UserResponse>;
+    /**
+     * 
+     * @type {Array<MessageResponse>}
+     * @memberof ConversationResponse
+     */
+    'messages': Array<MessageResponse>;
+}
+
+export const ConversationResponseTypeEnum = {
+    Private: 'PRIVATE',
+    Group: 'GROUP'
+} as const;
+
+export type ConversationResponseTypeEnum = typeof ConversationResponseTypeEnum[keyof typeof ConversationResponseTypeEnum];
+
+/**
+ * 
+ * @export
  * @interface Coucou
  */
 export interface Coucou {
@@ -110,6 +188,62 @@ export interface LoginResponse {
      * @memberof LoginResponse
      */
     'user': UserResponse;
+}
+/**
+ * 
+ * @export
+ * @interface MessageInput
+ */
+export interface MessageInput {
+    /**
+     * 
+     * @type {string}
+     * @memberof MessageInput
+     */
+    'conversationId': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MessageInput
+     */
+    'content': string;
+}
+/**
+ * 
+ * @export
+ * @interface MessageResponse
+ */
+export interface MessageResponse {
+    /**
+     * 
+     * @type {string}
+     * @memberof MessageResponse
+     */
+    'id': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MessageResponse
+     */
+    'conversationId': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MessageResponse
+     */
+    'senderId': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MessageResponse
+     */
+    'content': string;
+    /**
+     * User created datetime
+     * @type {string}
+     * @memberof MessageResponse
+     */
+    'createdAt': string;
 }
 /**
  * 
@@ -607,6 +741,324 @@ export class AuthApi extends BaseAPI implements AuthApiInterface {
 
 
 /**
+ * ConversationApi - axios parameter creator
+ * @export
+ */
+export const ConversationApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * Get conversation by id
+         * @summary Get conversation by id
+         * @param {string} conversationId The id of the conversation to retrieve.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getConversationById: async (conversationId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'conversationId' is not null or undefined
+            assertParamExists('getConversationById', 'conversationId', conversationId)
+            const localVarPath = `/conversations/{conversationId}`
+                .replace(`{${"conversationId"}}`, encodeURIComponent(String(conversationId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearer required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Get conversations by connected user
+         * @summary Get conversations by user
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getConversationsByUserId: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/conversations`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearer required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Create a new conversation with the given members
+         * @summary Create a new conversation
+         * @param {ConversationInput} conversationInput 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        postConversation: async (conversationInput: ConversationInput, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'conversationInput' is not null or undefined
+            assertParamExists('postConversation', 'conversationInput', conversationInput)
+            const localVarPath = `/conversations`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearer required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(conversationInput, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * ConversationApi - functional programming interface
+ * @export
+ */
+export const ConversationApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = ConversationApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * Get conversation by id
+         * @summary Get conversation by id
+         * @param {string} conversationId The id of the conversation to retrieve.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getConversationById(conversationId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ConversationResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getConversationById(conversationId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ConversationApi.getConversationById']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Get conversations by connected user
+         * @summary Get conversations by user
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getConversationsByUserId(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ConversationResponse>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getConversationsByUserId(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ConversationApi.getConversationsByUserId']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Create a new conversation with the given members
+         * @summary Create a new conversation
+         * @param {ConversationInput} conversationInput 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async postConversation(conversationInput: ConversationInput, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ConversationResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.postConversation(conversationInput, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ConversationApi.postConversation']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * ConversationApi - factory interface
+ * @export
+ */
+export const ConversationApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = ConversationApiFp(configuration)
+    return {
+        /**
+         * Get conversation by id
+         * @summary Get conversation by id
+         * @param {ConversationApiGetConversationByIdRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getConversationById(requestParameters: ConversationApiGetConversationByIdRequest, options?: RawAxiosRequestConfig): AxiosPromise<ConversationResponse> {
+            return localVarFp.getConversationById(requestParameters.conversationId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Get conversations by connected user
+         * @summary Get conversations by user
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getConversationsByUserId(options?: RawAxiosRequestConfig): AxiosPromise<Array<ConversationResponse>> {
+            return localVarFp.getConversationsByUserId(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Create a new conversation with the given members
+         * @summary Create a new conversation
+         * @param {ConversationApiPostConversationRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        postConversation(requestParameters: ConversationApiPostConversationRequest, options?: RawAxiosRequestConfig): AxiosPromise<ConversationResponse> {
+            return localVarFp.postConversation(requestParameters.conversationInput, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * ConversationApi - interface
+ * @export
+ * @interface ConversationApi
+ */
+export interface ConversationApiInterface {
+    /**
+     * Get conversation by id
+     * @summary Get conversation by id
+     * @param {ConversationApiGetConversationByIdRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ConversationApiInterface
+     */
+    getConversationById(requestParameters: ConversationApiGetConversationByIdRequest, options?: RawAxiosRequestConfig): AxiosPromise<ConversationResponse>;
+
+    /**
+     * Get conversations by connected user
+     * @summary Get conversations by user
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ConversationApiInterface
+     */
+    getConversationsByUserId(options?: RawAxiosRequestConfig): AxiosPromise<Array<ConversationResponse>>;
+
+    /**
+     * Create a new conversation with the given members
+     * @summary Create a new conversation
+     * @param {ConversationApiPostConversationRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ConversationApiInterface
+     */
+    postConversation(requestParameters: ConversationApiPostConversationRequest, options?: RawAxiosRequestConfig): AxiosPromise<ConversationResponse>;
+
+}
+
+/**
+ * Request parameters for getConversationById operation in ConversationApi.
+ * @export
+ * @interface ConversationApiGetConversationByIdRequest
+ */
+export interface ConversationApiGetConversationByIdRequest {
+    /**
+     * The id of the conversation to retrieve.
+     * @type {string}
+     * @memberof ConversationApiGetConversationById
+     */
+    readonly conversationId: string
+}
+
+/**
+ * Request parameters for postConversation operation in ConversationApi.
+ * @export
+ * @interface ConversationApiPostConversationRequest
+ */
+export interface ConversationApiPostConversationRequest {
+    /**
+     * 
+     * @type {ConversationInput}
+     * @memberof ConversationApiPostConversation
+     */
+    readonly conversationInput: ConversationInput
+}
+
+/**
+ * ConversationApi - object-oriented interface
+ * @export
+ * @class ConversationApi
+ * @extends {BaseAPI}
+ */
+export class ConversationApi extends BaseAPI implements ConversationApiInterface {
+    /**
+     * Get conversation by id
+     * @summary Get conversation by id
+     * @param {ConversationApiGetConversationByIdRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ConversationApi
+     */
+    public getConversationById(requestParameters: ConversationApiGetConversationByIdRequest, options?: RawAxiosRequestConfig) {
+        return ConversationApiFp(this.configuration).getConversationById(requestParameters.conversationId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Get conversations by connected user
+     * @summary Get conversations by user
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ConversationApi
+     */
+    public getConversationsByUserId(options?: RawAxiosRequestConfig) {
+        return ConversationApiFp(this.configuration).getConversationsByUserId(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Create a new conversation with the given members
+     * @summary Create a new conversation
+     * @param {ConversationApiPostConversationRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ConversationApi
+     */
+    public postConversation(requestParameters: ConversationApiPostConversationRequest, options?: RawAxiosRequestConfig) {
+        return ConversationApiFp(this.configuration).postConversation(requestParameters.conversationInput, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+
+/**
  * HealthApi - axios parameter creator
  * @export
  */
@@ -719,6 +1171,349 @@ export class HealthApi extends BaseAPI implements HealthApiInterface {
      */
     public coucou(options?: RawAxiosRequestConfig) {
         return HealthApiFp(this.configuration).coucou(options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+
+/**
+ * MessageApi - axios parameter creator
+ * @export
+ */
+export const MessageApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * Get a message by id
+         * @summary Get a message by id
+         * @param {string} messageId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getMessageById: async (messageId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'messageId' is not null or undefined
+            assertParamExists('getMessageById', 'messageId', messageId)
+            const localVarPath = `/messages/{messageId}`
+                .replace(`{${"messageId"}}`, encodeURIComponent(String(messageId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearer required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Get messages by conversation id
+         * @summary Get messages by conversation id
+         * @param {string} conversationId Conversation id in which the user is a member
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getMessagesByConversationId: async (conversationId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'conversationId' is not null or undefined
+            assertParamExists('getMessagesByConversationId', 'conversationId', conversationId)
+            const localVarPath = `/messages`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearer required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+            if (conversationId !== undefined) {
+                localVarQueryParameter['conversationId'] = conversationId;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Send a message to a conversation
+         * @summary Send a message
+         * @param {MessageInput} messageInput 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        postMessage: async (messageInput: MessageInput, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'messageInput' is not null or undefined
+            assertParamExists('postMessage', 'messageInput', messageInput)
+            const localVarPath = `/messages`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearer required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(messageInput, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * MessageApi - functional programming interface
+ * @export
+ */
+export const MessageApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = MessageApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * Get a message by id
+         * @summary Get a message by id
+         * @param {string} messageId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getMessageById(messageId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MessageResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getMessageById(messageId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['MessageApi.getMessageById']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Get messages by conversation id
+         * @summary Get messages by conversation id
+         * @param {string} conversationId Conversation id in which the user is a member
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getMessagesByConversationId(conversationId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<MessageResponse>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getMessagesByConversationId(conversationId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['MessageApi.getMessagesByConversationId']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Send a message to a conversation
+         * @summary Send a message
+         * @param {MessageInput} messageInput 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async postMessage(messageInput: MessageInput, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MessageResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.postMessage(messageInput, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['MessageApi.postMessage']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * MessageApi - factory interface
+ * @export
+ */
+export const MessageApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = MessageApiFp(configuration)
+    return {
+        /**
+         * Get a message by id
+         * @summary Get a message by id
+         * @param {MessageApiGetMessageByIdRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getMessageById(requestParameters: MessageApiGetMessageByIdRequest, options?: RawAxiosRequestConfig): AxiosPromise<MessageResponse> {
+            return localVarFp.getMessageById(requestParameters.messageId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Get messages by conversation id
+         * @summary Get messages by conversation id
+         * @param {MessageApiGetMessagesByConversationIdRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getMessagesByConversationId(requestParameters: MessageApiGetMessagesByConversationIdRequest, options?: RawAxiosRequestConfig): AxiosPromise<Array<MessageResponse>> {
+            return localVarFp.getMessagesByConversationId(requestParameters.conversationId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Send a message to a conversation
+         * @summary Send a message
+         * @param {MessageApiPostMessageRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        postMessage(requestParameters: MessageApiPostMessageRequest, options?: RawAxiosRequestConfig): AxiosPromise<MessageResponse> {
+            return localVarFp.postMessage(requestParameters.messageInput, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * MessageApi - interface
+ * @export
+ * @interface MessageApi
+ */
+export interface MessageApiInterface {
+    /**
+     * Get a message by id
+     * @summary Get a message by id
+     * @param {MessageApiGetMessageByIdRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof MessageApiInterface
+     */
+    getMessageById(requestParameters: MessageApiGetMessageByIdRequest, options?: RawAxiosRequestConfig): AxiosPromise<MessageResponse>;
+
+    /**
+     * Get messages by conversation id
+     * @summary Get messages by conversation id
+     * @param {MessageApiGetMessagesByConversationIdRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof MessageApiInterface
+     */
+    getMessagesByConversationId(requestParameters: MessageApiGetMessagesByConversationIdRequest, options?: RawAxiosRequestConfig): AxiosPromise<Array<MessageResponse>>;
+
+    /**
+     * Send a message to a conversation
+     * @summary Send a message
+     * @param {MessageApiPostMessageRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof MessageApiInterface
+     */
+    postMessage(requestParameters: MessageApiPostMessageRequest, options?: RawAxiosRequestConfig): AxiosPromise<MessageResponse>;
+
+}
+
+/**
+ * Request parameters for getMessageById operation in MessageApi.
+ * @export
+ * @interface MessageApiGetMessageByIdRequest
+ */
+export interface MessageApiGetMessageByIdRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof MessageApiGetMessageById
+     */
+    readonly messageId: string
+}
+
+/**
+ * Request parameters for getMessagesByConversationId operation in MessageApi.
+ * @export
+ * @interface MessageApiGetMessagesByConversationIdRequest
+ */
+export interface MessageApiGetMessagesByConversationIdRequest {
+    /**
+     * Conversation id in which the user is a member
+     * @type {string}
+     * @memberof MessageApiGetMessagesByConversationId
+     */
+    readonly conversationId: string
+}
+
+/**
+ * Request parameters for postMessage operation in MessageApi.
+ * @export
+ * @interface MessageApiPostMessageRequest
+ */
+export interface MessageApiPostMessageRequest {
+    /**
+     * 
+     * @type {MessageInput}
+     * @memberof MessageApiPostMessage
+     */
+    readonly messageInput: MessageInput
+}
+
+/**
+ * MessageApi - object-oriented interface
+ * @export
+ * @class MessageApi
+ * @extends {BaseAPI}
+ */
+export class MessageApi extends BaseAPI implements MessageApiInterface {
+    /**
+     * Get a message by id
+     * @summary Get a message by id
+     * @param {MessageApiGetMessageByIdRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof MessageApi
+     */
+    public getMessageById(requestParameters: MessageApiGetMessageByIdRequest, options?: RawAxiosRequestConfig) {
+        return MessageApiFp(this.configuration).getMessageById(requestParameters.messageId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Get messages by conversation id
+     * @summary Get messages by conversation id
+     * @param {MessageApiGetMessagesByConversationIdRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof MessageApi
+     */
+    public getMessagesByConversationId(requestParameters: MessageApiGetMessagesByConversationIdRequest, options?: RawAxiosRequestConfig) {
+        return MessageApiFp(this.configuration).getMessagesByConversationId(requestParameters.conversationId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Send a message to a conversation
+     * @summary Send a message
+     * @param {MessageApiPostMessageRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof MessageApi
+     */
+    public postMessage(requestParameters: MessageApiPostMessageRequest, options?: RawAxiosRequestConfig) {
+        return MessageApiFp(this.configuration).postMessage(requestParameters.messageInput, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
