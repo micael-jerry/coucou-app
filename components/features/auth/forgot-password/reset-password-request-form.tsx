@@ -30,7 +30,8 @@ export default function ResetPasswordRequestForm() {
 		try {
 			const response = await apiClient.authApi.resetPasswordRequest({ resetPasswordRequestDto: { email: data.email } });
 			router.push(`${ROUTES.FORGOT_PASSWORD}/success?message=${encodeURIComponent(response.data.message)}`);
-		} catch {
+		} catch (err) {
+			console.error('Send reset password request failed', err);
 			setError('An error occurred while sending the request. Please try again.');
 		} finally {
 			setIsLoading(false);
