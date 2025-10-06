@@ -40,7 +40,7 @@ export default function ResetPasswordForm() {
 		try {
 			await apiClient.authApi.resetPassword({ resetPasswordDto: { token, newPassword: data.newPassword } });
 			router.push(ROUTES.LOGIN);
-		} catch (error) {
+		} catch {
 			setError('An error occurred while resetting your password. Please try again.');
 		} finally {
 			setIsLoading(false);

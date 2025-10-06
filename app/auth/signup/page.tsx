@@ -1,7 +1,6 @@
 import AuthCard from '@/components/features/auth/auth-card';
 import SignupForm from '@/components/features/auth/signup/signup-form';
 import { ROUTES } from '@/src/constants/routes';
-import Image from 'next/image';
 import Link from 'next/link';
 
 export default function RegisterPage() {

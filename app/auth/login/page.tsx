@@ -1,10 +1,8 @@
 import AuthCard from '@/components/features/auth/auth-card';
 import LoginForm from '@/components/features/auth/login/login-form';
-import Footer from '@/components/layout/footer/footer';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { ROUTES } from '@/src/constants/routes';
-import Image from 'next/image';
 import Link from 'next/link';
 
 export default function LoginPage() {
