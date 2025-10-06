@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { ROUTES } from '@/src/constants/routes';
-import { signupFormSchema } from '@/src/schema/auth/signup-form-schema';
+import { SignupFormSchema } from '@/src/schema/auth/signup-form-schema';
 import { signUp } from '@/src/service/auth-service';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
@@ -15,8 +15,8 @@ import z from 'zod';
 export default function SignupForm() {
 	const [error, setError] = useState<string | null>(null);
 	const router = useRouter();
-	const signupForm = useForm<z.infer<typeof signupFormSchema>>({
-		resolver: zodResolver(signupFormSchema),
+	const signupForm = useForm<z.infer<typeof SignupFormSchema>>({
+		resolver: zodResolver(SignupFormSchema),
 		defaultValues: {
 			username: '',
 			email: '',
@@ -27,7 +27,7 @@ export default function SignupForm() {
 		},
 	});
 
-	const onSignupFormSubmit = async (data: z.infer<typeof signupFormSchema>) => {
+	const onSignupFormSubmit = async (data: z.infer<typeof SignupFormSchema>) => {
 		try {
 			setError(null);
 			await signUp(data);
