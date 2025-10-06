@@ -1,14 +1,14 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel } from '@/components/ui/form';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { apiClient } from '@/lib/api/api-client';
 import { ROUTES } from '@/src/constants/routes';
 import { ResetPasswordFormSchema } from '@/src/schema/auth/reset-password-form-schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import z from 'zod';
@@ -61,9 +61,9 @@ export default function ResetPasswordForm({ token }: ResetPasswordFormProps) {
 							<FormControl>
 								<Input type="password" {...field} />
 							</FormControl>
-							<FormDescription className="text-red-700">
+							<FormMessage className="text-red-700">
 								{resetPasswordForm.formState.errors.newPassword?.message}
-							</FormDescription>
+							</FormMessage>
 						</FormItem>
 					)}
 				/>
@@ -76,13 +76,13 @@ export default function ResetPasswordForm({ token }: ResetPasswordFormProps) {
 							<FormControl>
 								<Input type="password" {...field} />
 							</FormControl>
-							<FormDescription className="text-red-700">
+							<FormMessage className="text-red-700">
 								{resetPasswordForm.formState.errors.confirmPassword?.message}
-							</FormDescription>
+							</FormMessage>
 						</FormItem>
 					)}
 				/>
-				{error && <FormDescription className="text-red-700 mb-2">{error}</FormDescription>}
+				{error && <FormMessage className="text-red-700 mb-2">{error}</FormMessage>}
 				<div className="w-full flex flex-row justify-end gap-2">
 					<Button type="submit" disabled={isLoading}>
 						{isLoading ? 'Resetting...' : 'Reset Password'}

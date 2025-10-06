@@ -1,7 +1,7 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel } from '@/components/ui/form';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { apiClient } from '@/lib/api/api-client';
 import { ROUTES } from '@/src/constants/routes';
@@ -52,13 +52,13 @@ export default function ResetPasswordRequestForm() {
 							<FormControl>
 								<Input placeholder="example@example.com" autoComplete="email" {...field} />
 							</FormControl>
-							<FormDescription className="text-red-700">
+							<FormMessage className="text-red-700">
 								{resetPasswordRequestForm.formState.errors.email?.message}
-							</FormDescription>
+							</FormMessage>
 						</FormItem>
 					)}
 				/>
-				{error && <FormDescription className="text-red-700 mb-2">{error}</FormDescription>}
+				{error && <FormMessage className="text-red-700 mb-2">{error}</FormMessage>}
 				<div className="w-full flex flex-row justify-end gap-2">
 					<Button type="submit" disabled={isLoading}>
 						{isLoading ? 'Sending...' : 'Send Reset Link'}
