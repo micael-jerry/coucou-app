@@ -13,10 +13,13 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import z from 'zod';
 
-export default function ResetPasswordForm() {
+interface ResetPasswordFormProps {
+	token?: string;
+}
+
+export default function ResetPasswordForm({ token }: ResetPasswordFormProps) {
 	const [error, setError] = useState<string | null>(null);
 	const router = useRouter();
-	const searchParams = useSearchParams();
 	const [isLoading, setIsLoading] = useState(false);
 	const resetPasswordForm = useForm<z.infer<typeof ResetPasswordFormSchema>>({
 		resolver: zodResolver(ResetPasswordFormSchema),
@@ -29,7 +32,6 @@ export default function ResetPasswordForm() {
 	const onResetPasswordFormSubmit = async (data: z.infer<typeof ResetPasswordFormSchema>) => {
 		setError(null);
 		setIsLoading(true);
-		const token = searchParams.get('token');
 
 		if (!token) {
 			setError('No reset token found. Please request a new reset link.');
