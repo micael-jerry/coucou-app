@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { ROUTES } from '@/src/constants/routes';
-import { loginFormSchema } from '@/src/schema/auth/login-form-schema';
+import { LoginFormSchema } from '@/src/schema/auth/login-form-schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
@@ -15,15 +15,15 @@ import z from 'zod';
 export default function LoginForm() {
 	const [error, setError] = useState<string | null>(null);
 	const router = useRouter();
-	const loginForm = useForm<z.infer<typeof loginFormSchema>>({
-		resolver: zodResolver(loginFormSchema),
+	const loginForm = useForm<z.infer<typeof LoginFormSchema>>({
+		resolver: zodResolver(LoginFormSchema),
 		defaultValues: {
 			username: '',
 			password: '',
 		},
 	});
 
-	const onLoginFormSubmit = async (data: z.infer<typeof loginFormSchema>) => {
+	const onLoginFormSubmit = async (data: z.infer<typeof LoginFormSchema>) => {
 		await signIn('credentials', { redirect: false, ...data }).then((res) => {
 			if (res?.error) setError(res.error);
 			else {

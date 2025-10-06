@@ -3,4 +3,5 @@ export const ROUTES = {
 	LOGIN: '/auth/login',
 	SIGNUP: '/auth/signup',
 	COUCOU: '/coucou',
+	FORGOT_PASSWORD: '/auth/forgot-password',
 };
