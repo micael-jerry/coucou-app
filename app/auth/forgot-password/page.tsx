@@ -7,7 +7,7 @@ export default function ForgotPasswordPage() {
 	return (
 		<AuthCard title="Find your account" description="Please enter your email to search for your account.">
 			<ResetPasswordRequestForm />
-			<p className="text-sm text-muted-foreground mt-1 text-center">
+			<p className="text-sm text-muted-foreground mt-1">
 				<Link href={ROUTES.LOGIN} className="text-primary underline hover:opacity-80">
 					Log in ?
 				</Link>

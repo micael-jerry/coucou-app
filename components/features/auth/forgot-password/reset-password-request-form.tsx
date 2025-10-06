@@ -3,6 +3,7 @@
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { apiClient } from '@/lib/api/api-client';
 import { ROUTES } from '@/src/constants/routes';
 import { ResetPasswordRequestFormSchema } from '@/src/schema/auth/reset-password-request-form-schema';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -15,6 +16,7 @@ import z from 'zod';
 export default function ResetPasswordRequestForm() {
 	const [error, setError] = useState<string | null>(null);
 	const router = useRouter();
+	const [isLoading, setIsLoading] = useState(false);
 	const resetPasswordRequestForm = useForm<z.infer<typeof ResetPasswordRequestFormSchema>>({
 		resolver: zodResolver(ResetPasswordRequestFormSchema),
 		defaultValues: {
@@ -23,7 +25,16 @@ export default function ResetPasswordRequestForm() {
 	});
 
 	const onResetPasswordRequestFormSubmit = async (data: z.infer<typeof ResetPasswordRequestFormSchema>) => {
-		console.log(data);
+		setError(null);
+		setIsLoading(true);
+		try {
+			const response = await apiClient.authApi.resetPasswordRequest({ resetPasswordRequestDto: { email: data.email } });
+			router.push(`${ROUTES.FORGOT_PASSWORD}/success?message=${encodeURIComponent(response.data.message)}`);
+		} catch (error) {
+			setError('An error occurred while sending the request. Please try again.');
+		} finally {
+			setIsLoading(false);
+		}
 	};
 
 	return (
@@ -49,9 +60,13 @@ export default function ResetPasswordRequestForm() {
 				/>
 				{error && <FormDescription className="text-red-700 mb-2">{error}</FormDescription>}
 				<div className="w-full flex flex-row justify-end gap-2">
-					<Button type="submit">Search</Button>
+					<Button type="submit" disabled={isLoading}>
+						{isLoading ? 'Sending...' : 'Send Reset Link'}
+					</Button>
 					<Link href={ROUTES.HOME}>
-						<Button variant={'secondary'}>Cancel</Button>
+						<Button variant={'secondary'} disabled={isLoading}>
+							Cancel
+						</Button>
 					</Link>
 				</div>
 			</form>
