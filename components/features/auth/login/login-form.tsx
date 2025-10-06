@@ -1,10 +1,10 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel } from '@/components/ui/form';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { ROUTES } from '@/src/constants/routes';
-import { loginFormSchema } from '@/src/schema/auth/login-form-schema';
+import { LoginFormSchema } from '@/src/schema/auth/login-form-schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
@@ -15,15 +15,15 @@ import z from 'zod';
 export default function LoginForm() {
 	const [error, setError] = useState<string | null>(null);
 	const router = useRouter();
-	const loginForm = useForm<z.infer<typeof loginFormSchema>>({
-		resolver: zodResolver(loginFormSchema),
+	const loginForm = useForm<z.infer<typeof LoginFormSchema>>({
+		resolver: zodResolver(LoginFormSchema),
 		defaultValues: {
 			username: '',
 			password: '',
 		},
 	});
 
-	const onLoginFormSubmit = async (data: z.infer<typeof loginFormSchema>) => {
+	const onLoginFormSubmit = async (data: z.infer<typeof LoginFormSchema>) => {
 		await signIn('credentials', { redirect: false, ...data }).then((res) => {
 			if (res?.error) setError(res.error);
 			else {
@@ -45,7 +45,7 @@ export default function LoginForm() {
 							<FormControl>
 								<Input placeholder="jhonedoe" autoComplete="username" {...field} />
 							</FormControl>
-							<FormDescription className="text-red-700">{loginForm.formState.errors.username?.message}</FormDescription>
+							<FormMessage className="text-red-700">{loginForm.formState.errors.username?.message}</FormMessage>
 						</FormItem>
 					)}
 				/>
@@ -58,11 +58,11 @@ export default function LoginForm() {
 							<FormControl>
 								<Input placeholder="**********" autoComplete="password" type="password" {...field} />
 							</FormControl>
-							<FormDescription className="text-red-700">{loginForm.formState.errors.password?.message}</FormDescription>
+							<FormMessage className="text-red-700">{loginForm.formState.errors.password?.message}</FormMessage>
 						</FormItem>
 					)}
 				/>
-				{error && <FormDescription className="text-red-700 mb-2">{error}</FormDescription>}
+				{error && <FormMessage className="text-red-700 mb-2">{error}</FormMessage>}
 				<Button type="submit" className="mt-2 w-full">
 					Login
 				</Button>

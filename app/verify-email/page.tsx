@@ -12,6 +12,7 @@ interface VerifyEmailPageProps {
 	searchParams: Promise<{ token?: string }>;
 }
 
+// TODO: update server session after verification success
 export default async function VerifyEmailPage(props: VerifyEmailPageProps) {
 	const searchParams = await props.searchParams;
 	const result: HttpExceptionResponseDto = await apiClient.authApi
