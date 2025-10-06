@@ -87,7 +87,7 @@ export default function ResetPasswordForm({ token }: ResetPasswordFormProps) {
 					<Button type="submit" disabled={isLoading}>
 						{isLoading ? 'Resetting...' : 'Reset Password'}
 					</Button>
-					<Button variant={'secondary'} disabled={isLoading}>
+					<Button variant={'secondary'} disabled={isLoading} asChild>
 						<Link href={ROUTES.HOME}>Cancel</Link>
 					</Button>
 				</div>
