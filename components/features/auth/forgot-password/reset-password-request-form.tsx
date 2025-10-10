@@ -16,7 +16,6 @@ import z from 'zod';
 export default function ResetPasswordRequestForm() {
 	const [error, setError] = useState<string | null>(null);
 	const router = useRouter();
-	const [isLoading, setIsLoading] = useState(false);
 	const resetPasswordRequestForm = useForm<z.infer<typeof ResetPasswordRequestFormSchema>>({
 		resolver: zodResolver(ResetPasswordRequestFormSchema),
 		defaultValues: {
@@ -26,15 +25,12 @@ export default function ResetPasswordRequestForm() {
 
 	const onResetPasswordRequestFormSubmit = async (data: z.infer<typeof ResetPasswordRequestFormSchema>) => {
 		setError(null);
-		setIsLoading(true);
 		try {
 			const response = await apiClient.authApi.resetPasswordRequest({ resetPasswordRequestDto: { email: data.email } });
 			router.push(`${ROUTES.FORGOT_PASSWORD}/success?message=${encodeURIComponent(response.data.message)}`);
 		} catch (err) {
 			console.error('Send reset password request failed', err);
 			setError('An error occurred while sending the request. Please try again.');
-		} finally {
-			setIsLoading(false);
 		}
 	};
 
@@ -61,10 +57,10 @@ export default function ResetPasswordRequestForm() {
 				/>
 				{error && <FormMessage className="text-red-700 mb-2">{error}</FormMessage>}
 				<div className="w-full flex flex-row justify-end gap-2">
-					<Button type="submit" disabled={isLoading}>
-						{isLoading ? 'Sending...' : 'Send Reset Link'}
+					<Button type="submit" disabled={resetPasswordRequestForm.formState.isLoading}>
+						{resetPasswordRequestForm.formState.isLoading ? 'Sending...' : 'Send Reset Link'}
 					</Button>
-					<Button variant={'secondary'} disabled={isLoading} asChild>
+					<Button variant={'secondary'} disabled={resetPasswordRequestForm.formState.isLoading} asChild>
 						<Link href={ROUTES.HOME}>Cancel</Link>
 					</Button>
 				</div>

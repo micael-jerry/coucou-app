@@ -63,7 +63,7 @@ export default function LoginForm() {
 					)}
 				/>
 				{error && <FormMessage className="text-red-700 mb-2">{error}</FormMessage>}
-				<Button type="submit" className="mt-2 w-full">
+				<Button disabled={loginForm.formState.isLoading} type="submit" className="mt-2 w-full">
 					Login
 				</Button>
 			</form>
