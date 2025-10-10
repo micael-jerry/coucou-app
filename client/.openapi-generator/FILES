@@ -20,6 +20,7 @@ docs/ResetPasswordDto.md
 docs/ResetPasswordRequestDto.md
 docs/ResetPasswordRequestResponse.md
 docs/SignUpDto.md
+docs/UpdateUserDto.md
 docs/UserApi.md
 docs/UserResponse.md
 git_push.sh

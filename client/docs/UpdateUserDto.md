@@ -1,33 +1,27 @@
-# UserResponse
+# UpdateUserDto
 
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**id** | **string** |  | [default to undefined]
 **username** | **string** |  | [default to undefined]
 **email** | **string** |  | [default to undefined]
-**isVerified** | **boolean** | Email verification status | [default to undefined]
+**password** | **string** |  | [default to undefined]
 **firstname** | **string** |  | [default to undefined]
 **lastname** | **string** |  | [default to undefined]
-**role** | **string** | User role | [default to undefined]
-**createdAt** | **string** | User created datetime | [default to undefined]
 
 ## Example
 
 ```typescript
-import { UserResponse } from './api';
+import { UpdateUserDto } from './api';
 
-const instance: UserResponse = {
-    id,
+const instance: UpdateUserDto = {
     username,
     email,
-    isVerified,
+    password,
     firstname,
     lastname,
-    role,
-    createdAt,
 };
 ```
 

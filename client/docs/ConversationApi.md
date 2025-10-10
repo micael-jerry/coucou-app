@@ -161,7 +161,7 @@ const { status, data } = await apiInstance.postConversation(
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-|**200** |  |  -  |
+|**201** |  |  -  |
 |**400** | Bad Request - The request could not be understood or was missing required parameters. |  -  |
 |**403** | Forbidden - The server understood the request, but refuses to authorize it. |  -  |
 |**404** | Not Found - The requested resource could not be found on the server. |  -  |
