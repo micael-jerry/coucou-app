@@ -1,7 +1,6 @@
 import { LoginDto } from '@/client';
 import { apiClient } from '@/lib/api/api-client';
-import { User } from 'next-auth';
-import { AuthOptions } from 'next-auth';
+import { AuthOptions, User } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
 export const authOptions: AuthOptions = {
