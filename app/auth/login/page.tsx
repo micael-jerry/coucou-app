@@ -9,9 +9,9 @@ import { Loader2 } from 'lucide-react';
 import { signIn } from 'next-auth/react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 
-export default function LoginPage() {
+function LoginContent() {
 	const searchParams = useSearchParams();
 	const token = searchParams.get('token');
 	const [isLoading, setIsLoading] = useState(!!token);
@@ -35,13 +35,7 @@ export default function LoginPage() {
 	}, [token]);
 
 	if (isLoading) {
-		return (
-			<AuthCard title="Authenticating..." description="Please wait while we verify your token.">
-				<div className="flex justify-center py-8">
-					<Loader2 className="h-8 w-8 animate-spin text-primary" />
-				</div>
-			</AuthCard>
-		);
+		return <LoadingState />;
 	}
 
 	const handleGoogleLogin = () => {
@@ -92,5 +86,23 @@ export default function LoginPage() {
 				</Button>
 			</Link>
 		</AuthCard>
+	);
+}
+
+function LoadingState() {
+	return (
+		<AuthCard title="Authenticating..." description="Please wait while we verify your token.">
+			<div className="flex justify-center py-8">
+				<Loader2 className="h-8 w-8 animate-spin text-primary" />
+			</div>
+		</AuthCard>
+	);
+}
+
+export default function LoginPage() {
+	return (
+		<Suspense fallback={<LoadingState />}>
+			<LoginContent />
+		</Suspense>
 	);
 }
