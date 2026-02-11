@@ -8,10 +8,11 @@ import { ROUTES } from '@/src/constants/routes';
 import { Loader2 } from 'lucide-react';
 import { signIn } from 'next-auth/react';
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { useEffect, useState, Suspense } from 'react';
 
 function LoginContent() {
+	const router = useRouter();
 	const searchParams = useSearchParams();
 	const token = searchParams.get('token');
 	const [isLoading, setIsLoading] = useState(!!token);
@@ -19,20 +20,19 @@ function LoginContent() {
 	useEffect(() => {
 		if (token) {
 			const authenticate = async () => {
-				try {
-					await signIn('credentials-token', {
-						token,
-						callbackUrl: '/',
-						redirect: true,
-					});
-				} catch (error) {
-					console.error('Token authentication failed:', error);
+				const res = await signIn('credentials-token', {
+					token,
+					redirect: false,
+				});
+				if (res?.ok) {
+					router.replace('/');
+				} else {
 					setIsLoading(false);
 				}
 			};
 			authenticate();
 		}
-	}, [token]);
+	}, [token, router]);
 
 	if (isLoading) {
 		return <LoadingState />;
