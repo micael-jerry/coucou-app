@@ -125,6 +125,7 @@ export default function SignupForm() {
 				/>
 				{error && <FormMessage className="text-red-700 mb-2">{error}</FormMessage>}
 				<Button
+					disabled={signupForm.formState.isSubmitting}
 					type="submit"
 					className="mt-2 w-full rounded-lg bg-primary text-white font-semibold shadow hover:bg-primary/90 transition"
 				>

@@ -9,6 +9,10 @@ docs/ConversationApi.md
 docs/ConversationInput.md
 docs/ConversationResponse.md
 docs/Coucou.md
+docs/FriendRequestApi.md
+docs/FriendRequestInput.md
+docs/FriendRequestResponse.md
+docs/FriendRequestUpdateInput.md
 docs/HealthApi.md
 docs/HttpExceptionResponseDto.md
 docs/LoginDto.md

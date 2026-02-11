@@ -1,12 +1,13 @@
 import { LoginDto } from '@/client';
 import { apiClient } from '@/lib/api/api-client';
-import { User } from 'next-auth';
-import { AuthOptions } from 'next-auth';
+import { AuthOptions, User } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
 export const authOptions: AuthOptions = {
 	providers: [
 		CredentialsProvider({
+			id: 'credentials',
+			name: 'Credentials',
 			credentials: {
 				username: { label: 'Username', type: 'text', placeholder: 'johndoe' },
 				password: { label: 'Password', type: 'password', placeholder: 'yourpassword' },
@@ -24,6 +25,30 @@ export const authOptions: AuthOptions = {
 				} catch (err) {
 					console.error(err);
 					throw new Error('Invalid username or password');
+				}
+			},
+		}),
+		CredentialsProvider({
+			id: 'credentials-token',
+			name: 'CredentialsToken',
+			credentials: {
+				token: { label: 'Token', type: 'text', placeholder: 'aerjaganelkjraegaeg' },
+			},
+			authorize: async (credentials: Record<'token', string> | undefined): Promise<User | null> => {
+				try {
+					const token = credentials?.token;
+					if (!token) {
+						return null;
+					}
+
+					const { data, status } = await apiClient.authApi.whoAmI({ headers: { Authorization: `Bearer ${token}` } });
+					if (status === 200) {
+						return { ...data, accessToken: token };
+					}
+					return null;
+				} catch (err) {
+					console.error(err);
+					throw new Error('Invalid token');
 				}
 			},
 		}),

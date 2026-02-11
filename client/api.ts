@@ -36,6 +36,12 @@ export interface ConversationInput {
      */
     'type': ConversationInputTypeEnum;
     /**
+     * Conversation name
+     * @type {string}
+     * @memberof ConversationInput
+     */
+    'name': string;
+    /**
      * Array of user id
      * @type {Array<string>}
      * @memberof ConversationInput
@@ -75,6 +81,12 @@ export interface ConversationResponse {
      */
     'updatedAt': string;
     /**
+     * Conversation name
+     * @type {string}
+     * @memberof ConversationResponse
+     */
+    'name': string;
+    /**
      * 
      * @type {string}
      * @memberof ConversationResponse
@@ -113,6 +125,84 @@ export interface Coucou {
      * @memberof Coucou
      */
     'message': string;
+}
+/**
+ * 
+ * @export
+ * @interface FriendRequestInput
+ */
+export interface FriendRequestInput {
+    /**
+     * 
+     * @type {string}
+     * @memberof FriendRequestInput
+     */
+    'receiverId': string;
+}
+/**
+ * 
+ * @export
+ * @interface FriendRequestResponse
+ */
+export interface FriendRequestResponse {
+    /**
+     * 
+     * @type {string}
+     * @memberof FriendRequestResponse
+     */
+    'status': FriendRequestResponseStatusEnum;
+    /**
+     * User who sent the friend request
+     * @type {UserResponse}
+     * @memberof FriendRequestResponse
+     */
+    'sender': UserResponse;
+    /**
+     * User who received the friend request
+     * @type {UserResponse}
+     * @memberof FriendRequestResponse
+     */
+    'receiver': UserResponse;
+    /**
+     * Friend request created datetime
+     * @type {string}
+     * @memberof FriendRequestResponse
+     */
+    'createdAt': string;
+    /**
+     * Friend request updated datetime
+     * @type {string}
+     * @memberof FriendRequestResponse
+     */
+    'updatedAt': string;
+}
+
+export const FriendRequestResponseStatusEnum = {
+    Pending: 'PENDING',
+    Accepted: 'ACCEPTED',
+    Rejected: 'REJECTED'
+} as const;
+
+export type FriendRequestResponseStatusEnum = typeof FriendRequestResponseStatusEnum[keyof typeof FriendRequestResponseStatusEnum];
+
+/**
+ * 
+ * @export
+ * @interface FriendRequestUpdateInput
+ */
+export interface FriendRequestUpdateInput {
+    /**
+     * 
+     * @type {string}
+     * @memberof FriendRequestUpdateInput
+     */
+    'receiverId': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof FriendRequestUpdateInput
+     */
+    'status': string;
 }
 /**
  * 
@@ -441,6 +531,64 @@ export type UserResponseRoleEnum = typeof UserResponseRoleEnum[keyof typeof User
 export const AuthApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        googleAuthRedirect: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/auth/google/redirect`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        googleAuthSignIn: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/auth/google/sign-in`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * Reset password with token sended into email of user.
          * @summary Reset password
          * @param {ResetPasswordDto} resetPasswordDto 
@@ -666,6 +814,28 @@ export const AuthApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = AuthApiAxiosParamCreator(configuration)
     return {
         /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async googleAuthRedirect(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.googleAuthRedirect(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AuthApi.googleAuthRedirect']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async googleAuthSignIn(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.googleAuthSignIn(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AuthApi.googleAuthSignIn']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
          * Reset password with token sended into email of user.
          * @summary Reset password
          * @param {ResetPasswordDto} resetPasswordDto 
@@ -753,6 +923,22 @@ export const AuthApiFactory = function (configuration?: Configuration, basePath?
     const localVarFp = AuthApiFp(configuration)
     return {
         /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        googleAuthRedirect(options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.googleAuthRedirect(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        googleAuthSignIn(options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.googleAuthSignIn(options).then((request) => request(axios, basePath));
+        },
+        /**
          * Reset password with token sended into email of user.
          * @summary Reset password
          * @param {AuthApiResetPasswordRequest} requestParameters Request parameters.
@@ -820,6 +1006,22 @@ export const AuthApiFactory = function (configuration?: Configuration, basePath?
  * @interface AuthApi
  */
 export interface AuthApiInterface {
+    /**
+     * 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AuthApiInterface
+     */
+    googleAuthRedirect(options?: RawAxiosRequestConfig): AxiosPromise<void>;
+
+    /**
+     * 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AuthApiInterface
+     */
+    googleAuthSignIn(options?: RawAxiosRequestConfig): AxiosPromise<void>;
+
     /**
      * Reset password with token sended into email of user.
      * @summary Reset password
@@ -958,6 +1160,26 @@ export interface AuthApiVerifyEmailRequest {
  * @extends {BaseAPI}
  */
 export class AuthApi extends BaseAPI implements AuthApiInterface {
+    /**
+     * 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AuthApi
+     */
+    public googleAuthRedirect(options?: RawAxiosRequestConfig) {
+        return AuthApiFp(this.configuration).googleAuthRedirect(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AuthApi
+     */
+    public googleAuthSignIn(options?: RawAxiosRequestConfig) {
+        return AuthApiFp(this.configuration).googleAuthSignIn(options).then((request) => request(this.axios, this.basePath));
+    }
+
     /**
      * Reset password with token sended into email of user.
      * @summary Reset password
@@ -1348,6 +1570,358 @@ export class ConversationApi extends BaseAPI implements ConversationApiInterface
     }
 }
 
+
+
+/**
+ * FriendRequestApi - axios parameter creator
+ * @export
+ */
+export const FriendRequestApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * Get all friend requests for the current user
+         * @summary Get all friend requests
+         * @param {GetAllFriendRequestsStatusEnum} [status] Filter by status
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getAllFriendRequests: async (status?: GetAllFriendRequestsStatusEnum, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/friend-requests`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearer required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+            if (status !== undefined) {
+                localVarQueryParameter['status'] = status;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Send friend requests to the specified users
+         * @summary Send friend requests
+         * @param {Array<FriendRequestInput>} friendRequestInput 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        sendFriendRequests: async (friendRequestInput: Array<FriendRequestInput>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'friendRequestInput' is not null or undefined
+            assertParamExists('sendFriendRequests', 'friendRequestInput', friendRequestInput)
+            const localVarPath = `/friend-requests`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearer required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(friendRequestInput, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Update friend requests status for the current user
+         * @summary Update friend requests status
+         * @param {Array<FriendRequestUpdateInput>} friendRequestUpdateInput 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateFriendRequestStatus: async (friendRequestUpdateInput: Array<FriendRequestUpdateInput>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'friendRequestUpdateInput' is not null or undefined
+            assertParamExists('updateFriendRequestStatus', 'friendRequestUpdateInput', friendRequestUpdateInput)
+            const localVarPath = `/friend-requests`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearer required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(friendRequestUpdateInput, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * FriendRequestApi - functional programming interface
+ * @export
+ */
+export const FriendRequestApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = FriendRequestApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * Get all friend requests for the current user
+         * @summary Get all friend requests
+         * @param {GetAllFriendRequestsStatusEnum} [status] Filter by status
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getAllFriendRequests(status?: GetAllFriendRequestsStatusEnum, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<FriendRequestResponse>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getAllFriendRequests(status, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['FriendRequestApi.getAllFriendRequests']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Send friend requests to the specified users
+         * @summary Send friend requests
+         * @param {Array<FriendRequestInput>} friendRequestInput 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async sendFriendRequests(friendRequestInput: Array<FriendRequestInput>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<FriendRequestResponse>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.sendFriendRequests(friendRequestInput, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['FriendRequestApi.sendFriendRequests']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Update friend requests status for the current user
+         * @summary Update friend requests status
+         * @param {Array<FriendRequestUpdateInput>} friendRequestUpdateInput 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async updateFriendRequestStatus(friendRequestUpdateInput: Array<FriendRequestUpdateInput>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<FriendRequestResponse>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updateFriendRequestStatus(friendRequestUpdateInput, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['FriendRequestApi.updateFriendRequestStatus']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * FriendRequestApi - factory interface
+ * @export
+ */
+export const FriendRequestApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = FriendRequestApiFp(configuration)
+    return {
+        /**
+         * Get all friend requests for the current user
+         * @summary Get all friend requests
+         * @param {FriendRequestApiGetAllFriendRequestsRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getAllFriendRequests(requestParameters: FriendRequestApiGetAllFriendRequestsRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<Array<FriendRequestResponse>> {
+            return localVarFp.getAllFriendRequests(requestParameters.status, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Send friend requests to the specified users
+         * @summary Send friend requests
+         * @param {FriendRequestApiSendFriendRequestsRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        sendFriendRequests(requestParameters: FriendRequestApiSendFriendRequestsRequest, options?: RawAxiosRequestConfig): AxiosPromise<Array<FriendRequestResponse>> {
+            return localVarFp.sendFriendRequests(requestParameters.friendRequestInput, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Update friend requests status for the current user
+         * @summary Update friend requests status
+         * @param {FriendRequestApiUpdateFriendRequestStatusRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateFriendRequestStatus(requestParameters: FriendRequestApiUpdateFriendRequestStatusRequest, options?: RawAxiosRequestConfig): AxiosPromise<Array<FriendRequestResponse>> {
+            return localVarFp.updateFriendRequestStatus(requestParameters.friendRequestUpdateInput, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * FriendRequestApi - interface
+ * @export
+ * @interface FriendRequestApi
+ */
+export interface FriendRequestApiInterface {
+    /**
+     * Get all friend requests for the current user
+     * @summary Get all friend requests
+     * @param {FriendRequestApiGetAllFriendRequestsRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FriendRequestApiInterface
+     */
+    getAllFriendRequests(requestParameters?: FriendRequestApiGetAllFriendRequestsRequest, options?: RawAxiosRequestConfig): AxiosPromise<Array<FriendRequestResponse>>;
+
+    /**
+     * Send friend requests to the specified users
+     * @summary Send friend requests
+     * @param {FriendRequestApiSendFriendRequestsRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FriendRequestApiInterface
+     */
+    sendFriendRequests(requestParameters: FriendRequestApiSendFriendRequestsRequest, options?: RawAxiosRequestConfig): AxiosPromise<Array<FriendRequestResponse>>;
+
+    /**
+     * Update friend requests status for the current user
+     * @summary Update friend requests status
+     * @param {FriendRequestApiUpdateFriendRequestStatusRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FriendRequestApiInterface
+     */
+    updateFriendRequestStatus(requestParameters: FriendRequestApiUpdateFriendRequestStatusRequest, options?: RawAxiosRequestConfig): AxiosPromise<Array<FriendRequestResponse>>;
+
+}
+
+/**
+ * Request parameters for getAllFriendRequests operation in FriendRequestApi.
+ * @export
+ * @interface FriendRequestApiGetAllFriendRequestsRequest
+ */
+export interface FriendRequestApiGetAllFriendRequestsRequest {
+    /**
+     * Filter by status
+     * @type {'PENDING' | 'ACCEPTED' | 'REJECTED'}
+     * @memberof FriendRequestApiGetAllFriendRequests
+     */
+    readonly status?: GetAllFriendRequestsStatusEnum
+}
+
+/**
+ * Request parameters for sendFriendRequests operation in FriendRequestApi.
+ * @export
+ * @interface FriendRequestApiSendFriendRequestsRequest
+ */
+export interface FriendRequestApiSendFriendRequestsRequest {
+    /**
+     * 
+     * @type {Array<FriendRequestInput>}
+     * @memberof FriendRequestApiSendFriendRequests
+     */
+    readonly friendRequestInput: Array<FriendRequestInput>
+}
+
+/**
+ * Request parameters for updateFriendRequestStatus operation in FriendRequestApi.
+ * @export
+ * @interface FriendRequestApiUpdateFriendRequestStatusRequest
+ */
+export interface FriendRequestApiUpdateFriendRequestStatusRequest {
+    /**
+     * 
+     * @type {Array<FriendRequestUpdateInput>}
+     * @memberof FriendRequestApiUpdateFriendRequestStatus
+     */
+    readonly friendRequestUpdateInput: Array<FriendRequestUpdateInput>
+}
+
+/**
+ * FriendRequestApi - object-oriented interface
+ * @export
+ * @class FriendRequestApi
+ * @extends {BaseAPI}
+ */
+export class FriendRequestApi extends BaseAPI implements FriendRequestApiInterface {
+    /**
+     * Get all friend requests for the current user
+     * @summary Get all friend requests
+     * @param {FriendRequestApiGetAllFriendRequestsRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FriendRequestApi
+     */
+    public getAllFriendRequests(requestParameters: FriendRequestApiGetAllFriendRequestsRequest = {}, options?: RawAxiosRequestConfig) {
+        return FriendRequestApiFp(this.configuration).getAllFriendRequests(requestParameters.status, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Send friend requests to the specified users
+     * @summary Send friend requests
+     * @param {FriendRequestApiSendFriendRequestsRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FriendRequestApi
+     */
+    public sendFriendRequests(requestParameters: FriendRequestApiSendFriendRequestsRequest, options?: RawAxiosRequestConfig) {
+        return FriendRequestApiFp(this.configuration).sendFriendRequests(requestParameters.friendRequestInput, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Update friend requests status for the current user
+     * @summary Update friend requests status
+     * @param {FriendRequestApiUpdateFriendRequestStatusRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FriendRequestApi
+     */
+    public updateFriendRequestStatus(requestParameters: FriendRequestApiUpdateFriendRequestStatusRequest, options?: RawAxiosRequestConfig) {
+        return FriendRequestApiFp(this.configuration).updateFriendRequestStatus(requestParameters.friendRequestUpdateInput, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+/**
+ * @export
+ */
+export const GetAllFriendRequestsStatusEnum = {
+    Pending: 'PENDING',
+    Accepted: 'ACCEPTED',
+    Rejected: 'REJECTED'
+} as const;
+export type GetAllFriendRequestsStatusEnum = typeof GetAllFriendRequestsStatusEnum[keyof typeof GetAllFriendRequestsStatusEnum];
 
 
 /**

@@ -4,12 +4,100 @@ All URIs are relative to *http://localhost*
 
 |Method | HTTP request | Description|
 |------------- | ------------- | -------------|
+|[**googleAuthRedirect**](#googleauthredirect) | **GET** /auth/google/redirect | |
+|[**googleAuthSignIn**](#googleauthsignin) | **GET** /auth/google/sign-in | |
 |[**resetPassword**](#resetpassword) | **POST** /auth/reset-password | Reset password|
 |[**resetPasswordRequest**](#resetpasswordrequest) | **POST** /auth/reset-password-request | Send reset password email|
 |[**signIn**](#signin) | **POST** /auth/sign-in | User login endpoint|
 |[**signUp**](#signup) | **POST** /auth/sign-up | User registration endpoint|
 |[**verifyEmail**](#verifyemail) | **GET** /auth/verify-email | Verify email address|
 |[**whoAmI**](#whoami) | **GET** /auth/who-am-i | Get current user information|
+
+# **googleAuthRedirect**
+> googleAuthRedirect()
+
+
+### Example
+
+```typescript
+import {
+    AuthApi,
+    Configuration
+} from './api';
+
+const configuration = new Configuration();
+const apiInstance = new AuthApi(configuration);
+
+const { status, data } = await apiInstance.googleAuthRedirect();
+```
+
+### Parameters
+This endpoint does not have any parameters.
+
+
+### Return type
+
+void (empty response body)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: Not defined
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+|**200** |  |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **googleAuthSignIn**
+> googleAuthSignIn()
+
+
+### Example
+
+```typescript
+import {
+    AuthApi,
+    Configuration
+} from './api';
+
+const configuration = new Configuration();
+const apiInstance = new AuthApi(configuration);
+
+const { status, data } = await apiInstance.googleAuthSignIn();
+```
+
+### Parameters
+This endpoint does not have any parameters.
+
+
+### Return type
+
+void (empty response body)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: Not defined
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+|**200** |  |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **resetPassword**
 > UserResponse resetPassword(resetPasswordDto)

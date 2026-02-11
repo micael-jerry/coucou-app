@@ -17,10 +17,9 @@ interface ResetPasswordFormProps {
 	token?: string;
 }
 
-export default function ResetPasswordForm({ token }: ResetPasswordFormProps) {
+export default function ResetPasswordForm({ token }: Readonly<ResetPasswordFormProps>) {
 	const [error, setError] = useState<string | null>(null);
 	const router = useRouter();
-	const [isLoading, setIsLoading] = useState(false);
 	const resetPasswordForm = useForm<z.infer<typeof ResetPasswordFormSchema>>({
 		resolver: zodResolver(ResetPasswordFormSchema),
 		defaultValues: {
@@ -31,22 +30,16 @@ export default function ResetPasswordForm({ token }: ResetPasswordFormProps) {
 
 	const onResetPasswordFormSubmit = async (data: z.infer<typeof ResetPasswordFormSchema>) => {
 		setError(null);
-		setIsLoading(true);
-
 		if (!token) {
 			setError('No reset token found. Please request a new reset link.');
-			setIsLoading(false);
 			return;
 		}
-
 		try {
 			await apiClient.authApi.resetPassword({ resetPasswordDto: { token, newPassword: data.newPassword } });
 			router.push(ROUTES.LOGIN);
 		} catch (err) {
 			console.error('Error resetting password:', err);
 			setError('An error occurred while resetting your password. Please try again.');
-		} finally {
-			setIsLoading(false);
 		}
 	};
 
@@ -85,10 +78,10 @@ export default function ResetPasswordForm({ token }: ResetPasswordFormProps) {
 				/>
 				{error && <FormMessage className="text-red-700 mb-2">{error}</FormMessage>}
 				<div className="w-full flex flex-row justify-end gap-2">
-					<Button type="submit" disabled={isLoading}>
-						{isLoading ? 'Resetting...' : 'Reset Password'}
+					<Button type="submit" disabled={resetPasswordForm.formState.isSubmitting}>
+						{resetPasswordForm.formState.isSubmitting ? 'Resetting...' : 'Reset Password'}
 					</Button>
-					<Button variant={'secondary'} disabled={isLoading} asChild>
+					<Button variant={'secondary'} disabled={resetPasswordForm.formState.isSubmitting} asChild>
 						<Link href={ROUTES.HOME}>Cancel</Link>
 					</Button>
 				</div>
