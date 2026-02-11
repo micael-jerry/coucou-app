@@ -17,7 +17,7 @@ interface ResetPasswordFormProps {
 	token?: string;
 }
 
-export default function ResetPasswordForm({ token }: ResetPasswordFormProps) {
+export default function ResetPasswordForm({ token }: Readonly<ResetPasswordFormProps>) {
 	const [error, setError] = useState<string | null>(null);
 	const router = useRouter();
 	const resetPasswordForm = useForm<z.infer<typeof ResetPasswordFormSchema>>({
@@ -78,10 +78,10 @@ export default function ResetPasswordForm({ token }: ResetPasswordFormProps) {
 				/>
 				{error && <FormMessage className="text-red-700 mb-2">{error}</FormMessage>}
 				<div className="w-full flex flex-row justify-end gap-2">
-					<Button type="submit" disabled={resetPasswordForm.formState.isLoading}>
-						{resetPasswordForm.formState.isLoading ? 'Resetting...' : 'Reset Password'}
+					<Button type="submit" disabled={resetPasswordForm.formState.isSubmitting}>
+						{resetPasswordForm.formState.isSubmitting ? 'Resetting...' : 'Reset Password'}
 					</Button>
-					<Button variant={'secondary'} disabled={resetPasswordForm.formState.isLoading} asChild>
+					<Button variant={'secondary'} disabled={resetPasswordForm.formState.isSubmitting} asChild>
 						<Link href={ROUTES.HOME}>Cancel</Link>
 					</Button>
 				</div>
