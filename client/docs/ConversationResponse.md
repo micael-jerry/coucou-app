@@ -8,6 +8,7 @@ Name | Type | Description | Notes
 **id** | **string** |  | [default to undefined]
 **createdAt** | **string** | User created datetime | [default to undefined]
 **updatedAt** | **string** | User updated datetime | [default to undefined]
+**name** | **string** | Conversation name | [default to undefined]
 **type** | **string** |  | [default to undefined]
 **members** | [**Array&lt;UserResponse&gt;**](UserResponse.md) |  | [default to undefined]
 **messages** | [**Array&lt;MessageResponse&gt;**](MessageResponse.md) |  | [default to undefined]
@@ -21,6 +22,7 @@ const instance: ConversationResponse = {
     id,
     createdAt,
     updatedAt,
+    name,
     type,
     members,
     messages,

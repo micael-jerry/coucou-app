@@ -6,6 +6,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **type** | **string** |  | [default to undefined]
+**name** | **string** | Conversation name | [default to undefined]
 **membersId** | **Array&lt;string&gt;** | Array of user id | [default to undefined]
 
 ## Example
@@ -15,6 +16,7 @@ import { ConversationInput } from './api';
 
 const instance: ConversationInput = {
     type,
+    name,
     membersId,
 };
 ```
