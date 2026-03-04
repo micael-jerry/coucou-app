@@ -1,3 +1,9 @@
-export { default } from 'next-auth/middleware';
+import { withAuth } from 'next-auth/middleware';
 
-export const config = { matcher: ['/coucou', '/coucou/:path'] };
+export default withAuth({
+	pages: {
+		signIn: '/auth/login',
+	},
+});
+
+export const config = { matcher: ['/coucou', '/coucou/:path*', '/profile', '/profile/:path*'] };

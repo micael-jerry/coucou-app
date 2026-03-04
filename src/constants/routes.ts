@@ -3,5 +3,8 @@ export const ROUTES = {
 	LOGIN: '/auth/login',
 	SIGNUP: '/auth/signup',
 	COUCOU: '/coucou',
-	FORGOT_PASSWORD: '/auth/forgot-password',
+	COUCOU_CONVERSATION: (id: string) => `/coucou/${id}`,
+	FORGOT_PASSWORD: '/auth/forgot-password', // NOSONAR
+	PROFILE_EDIT: '/profile/edit',
+	SETTINGS: '/profile/settings',
 };
