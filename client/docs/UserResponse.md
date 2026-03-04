@@ -9,8 +9,8 @@ Name | Type | Description | Notes
 **username** | **string** |  | [default to undefined]
 **email** | **string** |  | [default to undefined]
 **isVerified** | **boolean** | Email verification status | [default to undefined]
-**firstname** | **string** |  | [default to undefined]
-**lastname** | **string** |  | [default to undefined]
+**firstname** | **object** |  | [default to undefined]
+**lastname** | **object** |  | [default to undefined]
 **role** | **string** | User role | [default to undefined]
 **createdAt** | **string** | User created datetime | [default to undefined]
 
