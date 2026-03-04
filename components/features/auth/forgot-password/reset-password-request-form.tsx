@@ -1,5 +1,6 @@
 'use client';
 
+import { Alert } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
@@ -7,6 +8,7 @@ import { apiClient } from '@/lib/api/api-client';
 import { ROUTES } from '@/src/constants/routes';
 import { ResetPasswordRequestFormSchema } from '@/src/schema/auth/reset-password-request-form-schema';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -22,6 +24,8 @@ export default function ResetPasswordRequestForm() {
 			email: '',
 		},
 	});
+
+	const isSubmitting = resetPasswordRequestForm.formState.isSubmitting;
 
 	const onResetPasswordRequestFormSubmit = async (data: z.infer<typeof ResetPasswordRequestFormSchema>) => {
 		setError(null);
@@ -47,20 +51,25 @@ export default function ResetPasswordRequestForm() {
 						<FormItem>
 							<FormLabel>Email</FormLabel>
 							<FormControl>
-								<Input placeholder="example@example.com" autoComplete="email" {...field} />
+								<Input placeholder="example@example.com" autoComplete="email" disabled={isSubmitting} {...field} />
 							</FormControl>
-							<FormMessage className="text-red-700">
-								{resetPasswordRequestForm.formState.errors.email?.message}
-							</FormMessage>
+							<FormMessage />
 						</FormItem>
 					)}
 				/>
-				{error && <FormMessage className="text-red-700 mb-2">{error}</FormMessage>}
+				{error && <Alert variant="destructive">{error}</Alert>}
 				<div className="w-full flex flex-row justify-end gap-2">
-					<Button type="submit" disabled={resetPasswordRequestForm.formState.isSubmitting}>
-						{resetPasswordRequestForm.formState.isSubmitting ? 'Sending...' : 'Send Reset Link'}
+					<Button type="submit" disabled={isSubmitting}>
+						{isSubmitting ? (
+							<>
+								<Loader2 className="size-4 animate-spin" />
+								Sending...
+							</>
+						) : (
+							'Send Reset Link'
+						)}
 					</Button>
-					<Button variant={'secondary'} disabled={resetPasswordRequestForm.formState.isSubmitting} asChild>
+					<Button variant="secondary" disabled={isSubmitting} asChild>
 						<Link href={ROUTES.HOME}>Cancel</Link>
 					</Button>
 				</div>

@@ -1,5 +1,6 @@
 'use client';
 
+import { Alert } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
@@ -7,6 +8,7 @@ import { apiClient } from '@/lib/api/api-client';
 import { ROUTES } from '@/src/constants/routes';
 import { ResetPasswordFormSchema } from '@/src/schema/auth/reset-password-form-schema';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -27,6 +29,8 @@ export default function ResetPasswordForm({ token }: Readonly<ResetPasswordFormP
 			confirmPassword: '',
 		},
 	});
+
+	const isSubmitting = resetPasswordForm.formState.isSubmitting;
 
 	const onResetPasswordFormSubmit = async (data: z.infer<typeof ResetPasswordFormSchema>) => {
 		setError(null);
@@ -53,11 +57,15 @@ export default function ResetPasswordForm({ token }: Readonly<ResetPasswordFormP
 						<FormItem>
 							<FormLabel>New Password</FormLabel>
 							<FormControl>
-								<Input type="password" {...field} />
+								<Input
+									type="password"
+									placeholder="••••••••••"
+									autoComplete="new-password"
+									disabled={isSubmitting}
+									{...field}
+								/>
 							</FormControl>
-							<FormMessage className="text-red-700">
-								{resetPasswordForm.formState.errors.newPassword?.message}
-							</FormMessage>
+							<FormMessage />
 						</FormItem>
 					)}
 				/>
@@ -68,20 +76,31 @@ export default function ResetPasswordForm({ token }: Readonly<ResetPasswordFormP
 						<FormItem>
 							<FormLabel>Confirm New Password</FormLabel>
 							<FormControl>
-								<Input type="password" {...field} />
+								<Input
+									type="password"
+									placeholder="••••••••••"
+									autoComplete="new-password"
+									disabled={isSubmitting}
+									{...field}
+								/>
 							</FormControl>
-							<FormMessage className="text-red-700">
-								{resetPasswordForm.formState.errors.confirmPassword?.message}
-							</FormMessage>
+							<FormMessage />
 						</FormItem>
 					)}
 				/>
-				{error && <FormMessage className="text-red-700 mb-2">{error}</FormMessage>}
+				{error && <Alert variant="destructive">{error}</Alert>}
 				<div className="w-full flex flex-row justify-end gap-2">
-					<Button type="submit" disabled={resetPasswordForm.formState.isSubmitting}>
-						{resetPasswordForm.formState.isSubmitting ? 'Resetting...' : 'Reset Password'}
+					<Button type="submit" disabled={isSubmitting}>
+						{isSubmitting ? (
+							<>
+								<Loader2 className="size-4 animate-spin" />
+								Resetting...
+							</>
+						) : (
+							'Reset Password'
+						)}
 					</Button>
-					<Button variant={'secondary'} disabled={resetPasswordForm.formState.isSubmitting} asChild>
+					<Button variant="secondary" disabled={isSubmitting} asChild>
 						<Link href={ROUTES.HOME}>Cancel</Link>
 					</Button>
 				</div>

@@ -8,14 +8,15 @@ import { ROUTES } from '@/src/constants/routes';
 import { Loader2 } from 'lucide-react';
 import { signIn } from 'next-auth/react';
 import Link from 'next/link';
-import { useSearchParams, useRouter } from 'next/navigation';
-import { useEffect, useState, Suspense } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { Suspense, useEffect, useState } from 'react';
 
 function LoginContent() {
 	const router = useRouter();
 	const searchParams = useSearchParams();
 	const token = searchParams.get('token');
 	const [isLoading, setIsLoading] = useState(!!token);
+	const [isGoogleLoading, setIsGoogleLoading] = useState(false);
 
 	useEffect(() => {
 		if (token) {
@@ -39,6 +40,7 @@ function LoginContent() {
 	}
 
 	const handleGoogleLogin = () => {
+		setIsGoogleLoading(true);
 		const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 		globalThis.location.href = `${apiBaseUrl}/auth/google/sign-in`;
 	};
@@ -55,23 +57,38 @@ function LoginContent() {
 						<span className="bg-background px-2 text-muted-foreground">Or continue with</span>
 					</div>
 				</div>
-				<Button variant="outline" type="button" className="w-full" onClick={handleGoogleLogin}>
-					<svg
-						className="mr-2 h-4 w-4"
-						aria-hidden="true"
-						focusable="false"
-						data-prefix="fab"
-						data-icon="google"
-						role="img"
-						xmlns="http://www.w3.org/2000/svg"
-						viewBox="0 0 488 512"
-					>
-						<path
-							fill="currentColor"
-							d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z"
-						></path>
-					</svg>
-					Google
+				<Button
+					variant="outline"
+					type="button"
+					className="w-full"
+					onClick={handleGoogleLogin}
+					disabled={isGoogleLoading}
+				>
+					{isGoogleLoading ? (
+						<>
+							<Loader2 className="mr-2 h-4 w-4 animate-spin" />
+							Connecting...
+						</>
+					) : (
+						<>
+							<svg
+								className="mr-2 h-4 w-4"
+								aria-hidden="true"
+								focusable="false"
+								data-prefix="fab"
+								data-icon="google"
+								role="img"
+								xmlns="http://www.w3.org/2000/svg"
+								viewBox="0 0 488 512"
+							>
+								<path
+									fill="currentColor"
+									d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z"
+								></path>
+							</svg>
+							Google
+						</>
+					)}
 				</Button>
 			</div>
 			<p className="text-sm text-muted-foreground mt-4 text-center">

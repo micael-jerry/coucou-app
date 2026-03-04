@@ -1,12 +1,15 @@
 'use client';
 
+import { Alert } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { ROUTES } from '@/src/constants/routes';
 import { LoginFormSchema } from '@/src/schema/auth/login-form-schema';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Loader2 } from 'lucide-react';
 import { signIn } from 'next-auth/react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -23,7 +26,10 @@ export default function LoginForm() {
 		},
 	});
 
+	const isSubmitting = loginForm.formState.isSubmitting;
+
 	const onLoginFormSubmit = async (data: z.infer<typeof LoginFormSchema>) => {
+		setError(null);
 		await signIn('credentials', { redirect: false, ...data }).then((res) => {
 			if (res?.error) setError(res.error);
 			else {
@@ -43,9 +49,9 @@ export default function LoginForm() {
 						<FormItem>
 							<FormLabel>Username</FormLabel>
 							<FormControl>
-								<Input placeholder="jhonedoe" autoComplete="username" {...field} />
+								<Input placeholder="jhonedoe" autoComplete="username" disabled={isSubmitting} {...field} />
 							</FormControl>
-							<FormMessage className="text-red-700">{loginForm.formState.errors.username?.message}</FormMessage>
+							<FormMessage />
 						</FormItem>
 					)}
 				/>
@@ -56,15 +62,36 @@ export default function LoginForm() {
 						<FormItem>
 							<FormLabel>Password</FormLabel>
 							<FormControl>
-								<Input placeholder="**********" autoComplete="password" type="password" {...field} />
+								<Input
+									placeholder="••••••••••"
+									autoComplete="current-password"
+									type="password"
+									disabled={isSubmitting}
+									{...field}
+								/>
 							</FormControl>
-							<FormMessage className="text-red-700">{loginForm.formState.errors.password?.message}</FormMessage>
+							<FormMessage />
 						</FormItem>
 					)}
 				/>
-				{error && <FormMessage className="text-red-700 mb-2">{error}</FormMessage>}
-				<Button disabled={loginForm.formState.isSubmitting} type="submit" className="mt-2 w-full">
-					Login
+				<div className="flex justify-end -mt-1">
+					<Link
+						href={ROUTES.FORGOT_PASSWORD}
+						className="text-xs text-muted-foreground hover:text-primary underline-offset-4 hover:underline transition-colors"
+					>
+						Forgot password?
+					</Link>
+				</div>
+				{error && <Alert variant="destructive">{error}</Alert>}
+				<Button disabled={isSubmitting} type="submit" className="w-full">
+					{isSubmitting ? (
+						<>
+							<Loader2 className="size-4 animate-spin" />
+							Logging in...
+						</>
+					) : (
+						'Login'
+					)}
 				</Button>
 			</form>
 		</Form>
